@@ -1,0 +1,8 @@
+﻿/AliasGame.Domain/obj/
+/AliasGame.Domain/bin/
+/.idea/
+/AliasGame.Infrastructure/bin/
+/AliasGame.Infrastructure/obj/
+/AliasGame.Infrastructure/AliasGame.Infrastructure.csproj.DotSettings
+/AliasGame.Web/bin/
+/AliasGame.Web/obj/
