@@ -6,3 +6,5 @@
 /AliasGame.Infrastructure/AliasGame.Infrastructure.csproj.DotSettings
 /AliasGame.Web/bin/
 /AliasGame.Web/obj/
+/AliasGame.Service/bin/
+/AliasGame.Service/obj/
