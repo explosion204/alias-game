@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<head>
+    <link type="text/css" rel="stylesheet" href="/css/style.css">
+    <script src="/js/app.js"></script>
+</head>
+<title>Test</title>
+<body>
+<header>
+    <nav class="nav-flex-container">
+        <div class="logo">
+            <a>ALIAS</a>
+        </div>
+        <div class="nav-link">
+            <a>About</a>
+        </div>
+        <div id="signInBtn" class="nav-button">
+            Sign in
+        </div>
+        <div id="signUpBtn" class="nav-button">
+            Sign up
+        </div>
+    </nav>
+</header>
+
+<aside>
+    <div id="signInModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sign in</h2>
+            </div>
+            <div class="modal-body">
+                <form class="account-form">
+                    <label>Email</label>
+                    <input class="form-element" type="text" name="email">
+                    <label>Password</label>
+                    <input class="form-element" type="password" name="password">
+                    <input class="form-submit" type="submit" value="Sign in">
+                    <a href="#">Forgot password?</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="signUpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sign up</h2>
+            </div>
+            <div class="modal-body">
+                <form class="account-form">
+                    <label>Email</label>
+                    <input class="form-element" type="text" name="email">
+                    <label>Confirm email</label>
+                    <input class="form-element" type="text" name="confirmEmail">
+                    <label>Password</label>
+                    <input class="form-element" type="password" name="password">
+                    <label>Confirm password</label>
+                    <input class="form-element" type="password" name="confirmPassword">
+                    <input class="form-submit" type="submit" value="Sign up">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Profile</h2>
+            </div>
+            <div class="modal-body">
+                <form class="account-form">
+                    <fieldset>
+                        <p>email@email.com</p>
+                        <p>Total games: <span>0</span></p>
+                        <p>Wins: <span>0</span></p>
+                    </fieldset>
+                    <label>Nickname</label>
+                    <input class="form-element" type="text" name="nickname">
+                    <label>New password</label>
+                    <input class="form-element" type="password" name="newPassword">
+                    <label>Confirm password</label>
+                    <input class="form-element" type="password" name="confirmPassword">
+                    <input class="form-submit" type="submit" value="Change password">
+                </form>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main class="main-flex-container">
+    <div class="start-game-container">
+        <figure class="box start-game-img"></figure>
+        <figure class="box join-game-img"></figure>
+    </div>
+</main>
+
+<footer class="footer-container">
+    <div class="contacts">
+        <p>CONTACTS</p>
+        <ul>
+            <li>
+                <figure class="contact-element">
+                    <a href="#"><img width="40px" height="40px" src="/img/github-logo.png" alt="github"></a>
+                    <a href="#"><figcaption class="contact-caption">explosion204</figcaption></a>
+                </figure>
+            </li>
+            <li>
+                <figure class="contact-element">
+                    <a href="#"><img width="40px" height="40px" src="/img/gmail-logo.png" alt="e-mail"></a>
+                    <a href="#"><figcaption class="contact-caption">dzmitriy20magic@gmail.com</figcaption></a>
+                </figure>
+            </li>
+        </ul>
+    </div>
+</footer>
+</body>

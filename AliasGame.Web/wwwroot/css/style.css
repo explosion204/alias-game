@@ -1,0 +1,282 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.nav-flex-container {
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 1px solid black;
+}
+
+.nav-flex-container .nav-button {
+    padding: 5px;
+    margin: 10px 8px;
+    width: 4%;
+    min-width: 70px;
+    text-align: center;
+    color: white;
+    background-color: rgb(9, 120, 194);
+    font-size: 1em;
+}
+
+.nav-flex-container .nav-button:hover {
+    background-color: white;
+    border: 1px rgb(9, 120, 194) solid;
+    color: rgb(9, 120, 194);
+    cursor: pointer;
+}
+
+.nav-flex-container .logo {
+    margin: 15px;
+    font-weight: bold;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin-right: auto;
+}
+
+.nav-flex-container .nav-link {
+    padding: 5px;
+    margin: 10px;
+    text-align: center;
+}
+
+.main-flex-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-flex-container .start-game-container {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.main-flex-container .start-game-container .box {
+    border: 3px solid rgb(9, 120, 194);
+    margin: 20px 7px;
+    width: 500px;
+    height: 500px;
+    min-width: 100px;
+    min-height: 100px;
+}
+
+@media (max-width:1000px) {
+    .main-flex-container .start-game-container {
+        flex-direction: column;
+    }
+
+    .main-flex-container .start-game-container .box {
+        margin: 20px auto;
+    }
+}
+
+.footer-container {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgb(9, 120, 194);
+    box-shadow: 4px 4px 8px 10px rgba(0, 0, 0, 0.2), 10px 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.footer-container .contacts {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-weight: bold;
+    margin: 2rem;
+    height: 8rem;
+    align-items: center;
+}
+
+.footer-container .contacts ul {
+    list-style-type: none;
+}
+
+@media (max-width: 1500px) {
+    .footer-container .contacts li {
+        display: inline-block;
+    }
+
+    .footer-container {
+        position: inherit;
+        display: flex;
+        flex-direction: column;
+        height: 8rem;
+    }
+}
+
+.footer-container .contacts a {
+    color: white;
+}
+
+.footer-container .contact-element {
+    display: flex;
+    align-items: center;
+    margin: 1rem;
+    justify-content: center;
+}
+
+.contact-caption {
+    margin-left: 1rem;
+    text-align: center;
+}
+
+.start-game-img {
+    background: url('/img/newgamenotactive.png') no-repeat;
+    background-size: cover;
+}
+
+.start-game-img:hover {
+    background: url('/img/newgameactive.png') no-repeat;
+    background-size: cover;
+    border: none;
+}
+
+.join-game-img {
+    background: url('/img/joingamenotactive.png') no-repeat;
+    background-size: cover;
+}
+
+.join-game-img:hover {
+    background: url('/img/joingameactive.png') no-repeat;
+    background-size: cover;
+    border: none;
+}
+
+.main-flex-container .lobby-id-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 80px;
+    background-color: grey;
+}
+
+.main-flex-container .lobby-id-container #lobby-id {
+    margin: auto auto 0 auto;
+}
+
+.main-flex-container .lobby-id-container .label {
+    margin: 10px auto auto auto;
+}
+
+.main-flex-container .game-area-container {
+    display: flex;
+    min-width: 100px;
+}
+
+.main-flex-container .game-area-container .side-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-flex-container .game-area-container .side-container .team-box {
+    border: 1px solid black;
+    margin: 6px 6px 3px 6px;
+    width: 200px;
+    height: 100px;
+    min-width: 100px;
+    min-height: 100px;
+}
+
+.main-flex-container .game-area-container .side-container .backlog {
+    border: 1px solid black;
+    margin: 6px 6px 3px 6px;
+    width: 200px;
+    height: 400px;
+    min-width: 100px;
+    min-height: 100px;
+}
+
+.main-flex-container .game-area-container .word-area {
+    border: 1px solid black;
+    margin: 6px;
+    width: 100%;
+    height: 618px;
+    min-width: 100px;
+    min-height: 100px;
+}
+
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; 
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    width: 20rem;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.modal-header {
+    padding: 14px 16px;
+    background-color: rgb(9, 120, 194);
+    color: white;
+    text-align: center;
+}
+
+.modal-body {
+    padding: 2px 16px;
+}
+
+.account-form {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+
+.account-form fieldset p {
+    text-align: center;
+    margin-bottom: 10px;
+    color: rgb(9, 120, 194);
+    font-weight: 900;
+}
+
+.account-form .form-element {
+    margin: 10px 0;
+    padding: 0 10px;
+    height: 30px;
+    border: 1px solid rgb(9, 120, 194);
+}
+
+.account-form .form-element:focus {
+    outline: none;
+    border: 3px solid rgb(9, 120, 194);
+}
+
+.account-form a {
+    margin: 10px 0;
+}
+
+a:link, a:visited {
+    color: black;
+    text-decoration: none;
+}
+
+.account-form .form-submit {
+    border: none;
+    background-color: rgb(9, 120, 194);
+    height: 35px;
+    margin: 10px 0;
+    color: white;
+}
+
+.account-form .form-submit:hover {
+    background-color: white;
+    border: 1px rgb(9, 120, 194) solid;
+    color: rgb(9, 120, 194);
+    cursor: pointer;
+}
