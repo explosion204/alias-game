@@ -1,0 +1,15 @@
+﻿{
+  "manifestVersion": 1,
+  "deployments": {
+    "aspNetCoreWeb": [
+      {
+        "name": "alias-game",
+        "parameters": {
+          "appBundle": ".",
+          "iisPath": "/",
+          "iisWebSite": "Default Web Site"
+        }
+      }
+    ]
+  }
+}
