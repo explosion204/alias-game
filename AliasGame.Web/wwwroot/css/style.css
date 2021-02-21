@@ -8,6 +8,10 @@ html, body {
     height: 100%;
 }
 
+address {
+    font-style: normal;
+}
+
 .nav-flex-container {
     height: 4rem;
     display: flex;
@@ -169,6 +173,22 @@ html, body {
     height: 6.25rem;
 }
 
+.join-team-btn {
+    margin: 0.375rem 0.375rem;
+    padding: 0.2rem;
+    text-align: center;
+    background-color: rgb(9, 120, 194);
+    color: white;
+    border: 1px white solid;
+    cursor: pointer;
+}
+
+.join-team-btn:hover {
+    border: 1px rgb(9, 120, 194) solid;
+    background-color: white;
+    color: rgb(9, 120, 194);
+}
+
 .player {
     margin: 0 0.5rem;
 }
@@ -189,7 +209,7 @@ html, body {
     border: 1px solid black;
     margin: 0.375rem 0.375rem 0.188em 0.375rem;
     width: 200px;
-    height: 22rem;
+    height: 19.5rem;
 }
 
 .word-area {
@@ -200,7 +220,7 @@ html, body {
     border: 1px solid black;
     margin: 0.375rem;
     width: 100%;
-    height: 35.6rem;
+    height: 37.95rem;
 }
 
 .word-area p {
@@ -363,6 +383,10 @@ a:link, a:visited {
 
     .side-container {
         flex-direction: row;
+    }
+
+    .join-team-btn {
+        writing-mode: vertical-lr;
     }
 
     .team-box {

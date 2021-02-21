@@ -1,46 +1,49 @@
-<div class="lobby-id-container">
+<section class="lobby-id-container">
     <span id="lobby-id">Game ID (also progress bar)</span>
     <span class="label">Share it with your friends</span>
-    <span class="label bold-label">1 / 4</span>
-</div>
-<div class="game-area-container">
+    <span class="label bold-label" title="Players in lobby">1 / 4</span>
+</section>
+
+<section class="game-area-container">
     <div class="side-container">
+        <div class="join-team-btn">Join team #1</div>
         <div class="team-box">
            <div class="player active">Player 1 <span>(creator)</span></div>
            <div class="player">Empty slot</div>
-           <div class="score">0</div>
+           <div class="score" title="Score">0</div>
         </div>
+        <div class="join-team-btn">Join team #2</div>
         <div class="team-box">
             <div class="player">Empty slot</div>
             <div class="player">Empty slot</div>
-            <div class="score">0</div>
+            <div class="score" title="Score">0</div>
         </div>
         <div class="backlog">
             <div class="expr">
                 <span class="accepted">expression</span>
-                <img class="vote-btn" width="20rem" height="20rem" src="/img/up.png">
-                <img class="vote-btn" width="20rem" height="20rem" src="/img/down.png">
+                <img class="vote-btn" width="20rem" height="20rem" src="/img/up.png" title="Accept">
+                <img class="vote-btn" width="20rem" height="20rem" src="/img/down.png" title="Reject">
             </div>
             <div class="expr">
                 <span class="rejected">expression</span>
-                <img class="vote-btn" width="20rem" height="20rem" src="/img/up.png">
-                <img class="vote-btn" width="20rem" height="20rem" src="/img/down.png">
+                <img class="vote-btn" width="20rem" height="20rem" src="/img/up.png" title="Accept">
+                <img class="vote-btn" width="20rem" height="20rem" src="/img/down.png" title="Reject">
             </div>
         </div>
     </div>
     <div class="word-area">
         <div class="word">VERY BIG WORD</div>
         <div class="next-word">
-            <div class="float accepted">
+            <div class="float accepted" title="Accept">
                 <div class="float-body">
                     <img width="30rem" height="30rem" src="/img/check.png">
                 </div>
             </div>
-            <div class="float rejected">
+            <div class="float rejected" title="Reject"> 
                 <div class="float-body">
                     <img width="30rem" height="30rem" src="/img/cross.png">
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
