@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <head>
     <link type="text/css" rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <script src="/js/app.js"></script>
 </head>
 <title>Test</title>
@@ -9,9 +11,6 @@
     <nav class="nav-flex-container">
         <div class="logo">
             <a>ALIAS</a>
-        </div>
-        <div class="nav-link">
-            <a>About</a>
         </div>
         <div id="signInBtn" class="nav-button">
             Sign in
@@ -87,14 +86,15 @@
     </div>
 </aside>
 
-<main class="main-flex-container">
+<main class="main-flex-container" id="mainContent">
     <div class="start-game-container">
-        <figure class="box start-game-img"></figure>
-        <figure class="box join-game-img"></figure>
+        <figure class="box start-game-img" id="startGame"></figure>
+        <figure class="box join-game-img" id="joinGame"></figure>
+        <figure class="box profile-img" id="profile"></figure>
     </div>
 </main>
 
-<footer class="footer-container">
+<footer id="footer-container">
     <div class="contacts">
         <p>CONTACTS</p>
         <ul>

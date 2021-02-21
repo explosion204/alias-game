@@ -1,9 +1,11 @@
 window.onload = function() {
     initModals();
+    document.getElementById("startGame").onclick = onBoxClick;
+    document.getElementById("joinGame").onclick = onBoxClick;
 }
 
 function initModals() {
-    modalIds = [['signInBtn', 'signInModal'], ['signUpBtn', 'profileModal']]
+    modalIds = [['signInBtn', 'signInModal'], ['signUpBtn', 'signUpModal'], ['profile', 'profileModal']]
     modals = []
 
     modalIds.forEach(data => {
@@ -26,5 +28,16 @@ function initModals() {
                 modal.style.display = 'none';
             }
         });
+    }
+}
+
+// DEV: only for test
+async function onBoxClick() {
+    let response = await fetch('/dev');
+
+    if (response.ok) {
+        response.text().then(text => {
+            document.getElementsByTagName('main')[0].innerHTML = text;
+        })
     }
 }

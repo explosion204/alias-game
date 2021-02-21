@@ -1,42 +1,46 @@
-<!DOCTYPE html>
-<head>
-    <link type="text/css" rel="stylesheet" href="/css/style.css">
-</head>
-<title>Test</title>
-<body>
-<header>
-    <nav class="nav-flex-container">
-        <div class="logo">
-            <a>ALIAS</a>
+<div class="lobby-id-container">
+    <span id="lobby-id">Game ID (also progress bar)</span>
+    <span class="label">Share it with your friends</span>
+    <span class="label bold-label">1 / 4</span>
+</div>
+<div class="game-area-container">
+    <div class="side-container">
+        <div class="team-box">
+           <div class="player active">Player 1 <span>(creator)</span></div>
+           <div class="player">Empty slot</div>
+           <div class="score">0</div>
         </div>
-        <div class="nav-link">
-            <a>About</a>
+        <div class="team-box">
+            <div class="player">Empty slot</div>
+            <div class="player">Empty slot</div>
+            <div class="score">0</div>
         </div>
-        <div class="nav-button">
-            <a>Sign in</a>
+        <div class="backlog">
+            <div class="expr">
+                <span class="accepted">expression</span>
+                <img class="vote-btn" width="20rem" height="20rem" src="/img/up.png">
+                <img class="vote-btn" width="20rem" height="20rem" src="/img/down.png">
+            </div>
+            <div class="expr">
+                <span class="rejected">expression</span>
+                <img class="vote-btn" width="20rem" height="20rem" src="/img/up.png">
+                <img class="vote-btn" width="20rem" height="20rem" src="/img/down.png">
+            </div>
         </div>
-        <div class="nav-button">
-            <a>Sign up</a>
-        </div>
-    </nav>
-</header>
-
-<main class="main-flex-container">
-    <div class="lobby-id-container">
-        <span id="lobby-id">ID</span>
-        <span class="label">Share it with your friends</span>
     </div>
-    <div class="game-area-container">
-        <div class="side-container">
-            <div class="team-box"></div>
-            <div class="team-box"></div>
-            <div class="backlog"></div>
+    <div class="word-area">
+        <div class="word">VERY BIG WORD</div>
+        <div class="next-word">
+            <div class="float accepted">
+                <div class="float-body">
+                    <img width="30rem" height="30rem" src="/img/check.png">
+                </div>
+            </div>
+            <div class="float rejected">
+                <div class="float-body">
+                    <img width="30rem" height="30rem" src="/img/cross.png">
+                </div>
+            </div>
         </div>
-        <div class="word-area"></div>
     </div>
-</main>
-
-<footer>
-
-</footer>
-</body>
+</div>
