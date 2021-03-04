@@ -1,5 +1,6 @@
 ﻿using System;
 using AliasGame.Domain;
+using AliasGame.Domain.Models;
 using AliasGame.Infrastructure.Database;
 using AliasGame.Infrastructure.Models;
 using AutoMapper;
@@ -17,8 +18,8 @@ namespace AliasGame.Infrastructure
         {
             services.AddDbContext<AppDbContext>(x => x.UseNpgsql(options.ConnString), 
                 ServiceLifetime.Transient);
-            
-            // TODO: Add repos
+            services.AddTransient<IRepository<Expression>, ExpressionRepository>();
+            services.AddTransient<IRepository<Session>, SessionRepository>();
         }
 
         public static void ConfigureIdentity(this IServiceCollection services, Action<IdentityOptions> options)

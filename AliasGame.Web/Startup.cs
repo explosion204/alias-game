@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AliasGame.Infrastructure;
+using AliasGame.Infrastructure.Database;
+using AliasGame.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,13 +24,31 @@ namespace AliasGame
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var appOptions = new ApplicationOptions();
+            Configuration.GetSection(ApplicationOptions.SectionName).Bind(appOptions);
+            
             services.AddControllers();
             services.AddControllersWithViews().AddSessionStateTempDataProvider();
             services.AddSession();
+            services.AddRepositories(new DbContextOptions()
+            {
+                ConnString = appOptions.ConnectionString
+            });
+            services.ConfigureIdentity(x =>
+            {
+                x.User.RequireUniqueEmail = true;
+                x.Password.RequiredLength = 8;
+                x.Password.RequireNonAlphanumeric = false;
+                x.Password.RequireLowercase = false;
+                x.Password.RequireUppercase = false;
+                x.Password.RequireDigit = false;
+            });
+            services.AddUserManager();
+            services.AddMapper();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
