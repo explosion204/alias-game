@@ -6,7 +6,7 @@ async function getAccessToken() {
     let decodedAccessToken = decodeJwt(accessToken);
 
     if (Date.now() >= decodedAccessToken['exp'] * 1000) {
-        let response = await fetch('/refresh_token', {
+        let response = await fetch('/api/account/refresh_token', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
