@@ -20,27 +20,9 @@ namespace AliasGame.Infrastructure
                 ServiceLifetime.Transient);
             services.AddTransient<IRepository<Expression>, ExpressionRepository>();
             services.AddTransient<IRepository<Session>, SessionRepository>();
+            services.AddTransient<IRepository<User>, UserRepository>();
         }
 
-        public static void ConfigureIdentity(this IServiceCollection services, Action<IdentityOptions> options)
-        {
-            services.AddIdentity<EfUser, IdentityRole<Guid>>(options)
-                .AddEntityFrameworkStores<AppDbContext>()
-                .AddDefaultTokenProviders()
-                .AddUserStore<UserStore<EfUser, IdentityRole<Guid>, AppDbContext, Guid>>();
-        }
-
-        public static void AddUserManager(this IServiceCollection services)
-        {
-            services.AddScoped<IUserManager>(x =>
-                new AppUserManager(
-                    x.GetRequiredService<UserManager<EfUser>>(),
-                    x.GetRequiredService<SignInManager<EfUser>>(),
-                    x.GetRequiredService<IMapper>()
-                )
-            );
-        }
-        
         public static void AddMapper(this IServiceCollection services)
         {
             var mapperConfig = new MapperConfiguration(cfg =>

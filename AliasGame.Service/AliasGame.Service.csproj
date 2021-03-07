@@ -8,4 +8,8 @@
       <ProjectReference Include="..\AliasGame.Domain\AliasGame.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+    </ItemGroup>
+
 </Project>

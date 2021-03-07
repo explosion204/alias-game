@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AliasGame.Infrastructure;
 using AliasGame.Infrastructure.Database;
 using AliasGame.Service;
+using AliasGame.Service.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AliasGame
 {
@@ -32,23 +36,13 @@ namespace AliasGame
             Configuration.GetSection(ApplicationOptions.SectionName).Bind(appOptions);
             
             services.AddControllers();
-            services.AddControllersWithViews().AddSessionStateTempDataProvider();
-            services.AddSession();
             services.AddRepositories(new DbContextOptions()
             {
                 ConnString = appOptions.ConnectionString
             });
-            services.ConfigureIdentity(x =>
-            {
-                x.User.RequireUniqueEmail = true;
-                x.Password.RequiredLength = 8;
-                x.Password.RequireNonAlphanumeric = false;
-                x.Password.RequireLowercase = false;
-                x.Password.RequireUppercase = false;
-                x.Password.RequireDigit = false;
-            });
-            services.AddUserManager();
             services.AddMapper();
+            services.AddAuth(Configuration);
+            services.AddAppServices(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -59,9 +53,7 @@ namespace AliasGame
             }
 
             app.UseStaticFiles();
-            app.UseSession();
             app.UseRouting();
-            app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
 

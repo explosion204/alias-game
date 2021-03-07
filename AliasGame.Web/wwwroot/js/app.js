@@ -1,34 +1,50 @@
-window.onload = function() {
+window.onload = async function() {
     initModals();
-    document.getElementById("startGame").onclick = onBoxClick;
-    document.getElementById("joinGame").onclick = onBoxClick;
+    initForms();
+    initValidation();
+
+    document.getElementById('startGame').onclick = onBoxClick;
+    document.getElementById('joinGame').onclick = onBoxClick;
+    document.getElementById('signOutBtn').onclick = async function () {
+        document.getElementById('signOutBtn').disabled = true;
+        await signOut(
+            async function () {
+                document.getElementById('signInBtn').style.display = 'block';
+                document.getElementById('signUpBtn').style.display = 'block';
+                document.getElementById('signOutBtn').style.display = 'none';
+                document.getElementById('profile').style.display = 'none';
+                document.getElementById('signOutBtn').disabled = false;
+                
+                await isAuthenticated(onAuthenticated, onNotAuthenticated);
+            }
+        )
+    };
+
+    await isAuthenticated(onAuthenticated, onNotAuthenticated);
+    getAccessToken();
 }
 
-function initModals() {
-    modalIds = [['signInBtn', 'signInModal'], ['signUpBtn', 'signUpModal'], ['profile', 'profileModal']]
-    modals = []
+function onPageLoaded() {
+    document.getElementsByTagName('body')[0].style.display = 'block';
+}
 
-    modalIds.forEach(data => {
-        btnId = data[0];
-        modalId = data[1];
+function onAuthenticated(result) {
+    document.getElementById('signInBtn').style.display = 'none';
+    document.getElementById('signUpBtn').style.display = 'none';
+    document.getElementById('signOutBtn').style.display = 'block';
+    document.getElementById('profile').style.display = 'block';
+    document.getElementById('profile-nickname').innerText = result['body']['nickname'];
+    document.getElementById('profile-total-games').innerText = result['body']['totalGames'];
+    document.getElementById('profile-wins').innerText = result['body']['wins'];
+    onPageLoaded();
+}
 
-        let modal = document.getElementById(modalId);
-        let btn = document.getElementById(btnId);
-        
-        btn.onclick = function() {
-            modal.style.display = 'block';
-        }
-
-        modals.push(modal);
-    });
-
-    window.onclick = function(event) {
-        modals.forEach(modal => {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        });
-    }
+function onNotAuthenticated() {
+    document.getElementById('signInBtn').style.display = 'block';
+    document.getElementById('signUpBtn').style.display = 'block';
+    document.getElementById('signOutBtn').style.display = 'none';
+    document.getElementById('profile').style.display = 'none';
+    onPageLoaded(); 
 }
 
 // DEV: only for test

@@ -31,12 +31,20 @@ namespace AliasGame.Infrastructure.Models
 
             CreateMap<EfUser, User>()
                 .ForMember("Id", opt => opt.MapFrom(src => src.Id))
-                .ForMember("Username", opt => opt.MapFrom(src => src.UserName))
-                .ForMember("Email", opt => opt.MapFrom(src => src.Email))
-                .ForMember("EmailConfirmed", opt => opt.MapFrom(src => src.EmailConfirmed))
+                .ForMember("Nickname", opt => opt.MapFrom(src => src.Nickname))
                 .ForMember("PasswordHash", opt => opt.MapFrom(src => src.PasswordHash))
                 .ForMember("TotalGames", opt => opt.MapFrom(src => src.TotalGames))
-                .ForMember("Wins", opt => opt.MapFrom(src => src.Wins));
+                .ForMember("Wins", opt => opt.MapFrom(src => src.Wins))
+                .ForMember("RefreshToken", opt => opt.MapFrom(src => new RefreshToken { Token = src.RefreshToken, Expires = src.RefreshTokenExpires }));
+
+            CreateMap<User, EfUser>()
+                .ForMember("Id", opt => opt.MapFrom(src => src.Id))
+                .ForMember("Nickname", opt => opt.MapFrom(src => src.Nickname))
+                .ForMember("PasswordHash", opt => opt.MapFrom(src => src.PasswordHash))
+                .ForMember("TotalGames", opt => opt.MapFrom(src => src.TotalGames))
+                .ForMember("Wins", opt => opt.MapFrom(src => src.Wins))
+                .ForMember("RefreshToken", opt => opt.MapFrom(src => src.RefreshToken.Token))
+                .ForMember("RefreshTokenExpires", opt => opt.MapFrom(src => src.RefreshToken.Expires));
         }
     }
 }

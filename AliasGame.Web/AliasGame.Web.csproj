@@ -9,4 +9,17 @@
       <Folder Include="wwwroot\templates" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\AliasGame.Infrastructure\AliasGame.Infrastructure.csproj" />
+      <ProjectReference Include="..\AliasGame.Service\AliasGame.Service.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.3" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
 </Project>

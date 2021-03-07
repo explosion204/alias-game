@@ -1,10 +1,11 @@
 ﻿using System;
 using AliasGame.Domain;
 using AliasGame.Domain.Models;
+using AliasGame.Service.Interfaces;
 
 namespace AliasGame.Service
 {
-    public class SessionService
+    public class SessionService : ISessionService
     {
         private readonly IRepository<Session> _sessionRepository;
 

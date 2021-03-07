@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using AliasGame.Domain;
 using AliasGame.Domain.Models;
+using AliasGame.Service.Interfaces;
 
 namespace AliasGame.Service
 {
-    public class ExpressionService
+    public class ExpressionService : IExpressionService
     {
         private readonly IRepository<Expression> _expressionRepository;
 

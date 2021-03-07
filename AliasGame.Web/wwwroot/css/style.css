@@ -8,6 +8,10 @@ html, body {
     height: 100%;
 }
 
+body {
+    display: none;
+}
+
 address {
     font-style: normal;
 }
@@ -36,6 +40,10 @@ address {
     border: 1px rgb(9, 120, 194) solid;
     color: rgb(9, 120, 194);
     cursor: pointer;
+}
+
+.nav-button:disabled {
+    background-color: rgba(9, 120, 194, 0.5);
 }
 
 .nav-flex-container .logo {
@@ -330,16 +338,30 @@ address {
     font-weight: 900;
 }
 
-.account-form .form-element {
+.account-form .error {
+    display: block;
+    color: darkred;
+    margin-bottom: 0.5rem;
+}
+
+.form-element, .form-element:valid {
     margin: 10px 0;
     padding: 0 10px;
     height: 30px;
     border: 1px solid rgb(9, 120, 194);
 }
 
-.account-form .form-element:focus {
+.form-element:focus {
     outline: none;
     border: 3px solid rgb(9, 120, 194);
+}
+
+.form-element:invalid {
+    border: 1px solid red;
+}
+
+.form-element:focus:invalid {
+    border: 3px solid red;
 }
 
 .account-form a {
@@ -351,7 +373,7 @@ a:link, a:visited {
     text-decoration: none;
 }
 
-.account-form .form-submit {
+.form-submit {
     border: none;
     background-color: rgb(9, 120, 194);
     height: 35px;
@@ -359,7 +381,15 @@ a:link, a:visited {
     color: white;
 }
 
-.account-form .form-submit:hover {
+.form-submit:active, .form-submit:focus {
+    outline: none;
+}
+
+.account-form .form-submit:disabled {
+    background-color: rgba(9, 120, 194, 0.5);
+}
+
+.account-form .form-submit:enabled:hover {
     background-color: white;
     border: 1px rgb(9, 120, 194) solid;
     color: rgb(9, 120, 194);
