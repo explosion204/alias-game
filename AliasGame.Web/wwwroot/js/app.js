@@ -54,6 +54,8 @@ async function onBoxClick() {
     if (response.ok) {
         response.text().then(text => {
             document.getElementsByTagName('main')[0].innerHTML = text;
+            document.getElementById('footer').style.display = 'none';
+            document.getElementById('mainContent').style.margin = 0;
         })
     }
 }

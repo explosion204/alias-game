@@ -2,14 +2,30 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: background 100ms linear;
 }
 
-html, body {
-    height: 100%;
-}
+/* html, body {
+    min-height: 100vh;
+} */
 
 body {
     display: none;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* preload images */
+body::after {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    z-index: -1;
+    content:
+        url('/img/newgamenotactive.png') url('/img/newgameactive.png') 
+        url('/img/joingamenotactive.png') url('/img/joingameactive.png') 
+        url('/img/profilenotactive.png')  url('/img/profileactive.png');
 }
 
 address {
@@ -17,6 +33,9 @@ address {
 }
 
 .nav-flex-container {
+    position: absolute;
+    left: 0;
+    right: 0;
     height: 4rem;
     display: flex;
     justify-content: flex-end;
@@ -55,6 +74,7 @@ address {
 }
 
 .main-flex-container {
+    padding: 4rem 0 10rem 0;
     display: flex;
     flex-direction: column;
 }
@@ -73,11 +93,11 @@ address {
     cursor: pointer;
 }
 
-#footer-container {
-    position: fixed;
-    bottom: 0;
+.footer-container {
+    position: absolute;
     right: 0;
     left: 0;
+    bottom: 0;
     height: 10rem;
     background-color: rgb(9, 120, 194);
 }
@@ -92,12 +112,16 @@ address {
     align-items: center;
 }
 
+.contacts li {
+    display: inline-block;
+    margin: 0 1rem;
+}
+
 .contacts ul {
     list-style-type: none;
 }
 
-
-#footer-container .contacts a {
+.footer-container .contacts a {
     color: white;
 }
 
@@ -165,6 +189,12 @@ address {
 
 .game-area-container {
     display: flex;
+    position: absolute;
+    top: 12rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 1rem;
 }
 
 .side-container {
@@ -178,7 +208,7 @@ address {
     border: 1px solid black;
     margin: 0.375rem 0.375rem 0.188em 0.375rem;
     width: 12.5rem;
-    height: 6.25rem;
+    height: auto;
 }
 
 .join-team-btn {
@@ -215,9 +245,9 @@ address {
     display: flex;
     flex-direction: column;
     border: 1px solid black;
-    margin: 0.375rem 0.375rem 0.188em 0.375rem;
+    margin: 0.375rem 0.375rem 0 0.375rem;
     width: 200px;
-    height: 19.5rem;
+    height: 100%;
 }
 
 .word-area {
@@ -226,9 +256,8 @@ address {
     justify-content: center;
     align-items: center;
     border: 1px solid black;
-    margin: 0.375rem;
+    margin: 0.375rem 0.375rem 0 0;
     width: 100%;
-    height: 37.95rem;
 }
 
 .word-area p {
@@ -404,9 +433,13 @@ a:link, a:visited {
     .main-flex-container .start-game-container .box {
         margin: 2rem auto;
     }
+
+    .contacts li {
+        display: inline-block;
+    }
 }
 
-@media (max-width: 50em) {
+@media (max-width: 70em) {
     .game-area-container {
         flex-direction: column;
     }
@@ -436,15 +469,8 @@ a:link, a:visited {
     }
 }
 
-@media (max-width: 110em) {
+/* @media (max-width: 110em) {
     .contacts li {
         display: inline-block;
     }
-
-    #footer-container {
-        position: inherit;
-        display: flex;
-        flex-direction: column;
-        height: 10rem;
-    }
-}
+} */
