@@ -4,8 +4,6 @@ using AliasGame.Domain.Models;
 using AliasGame.Infrastructure.Database;
 using AliasGame.Infrastructure.Models;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using DbContextOptions = AliasGame.Infrastructure.Database.DbContextOptions;
