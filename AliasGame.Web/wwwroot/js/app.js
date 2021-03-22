@@ -4,7 +4,7 @@ window.onload = async function() {
     initValidation();
 
     document.getElementById('startGame').onclick = onBoxClick;
-    document.getElementById('joinGame').onclick = onBoxClick;
+    // document.getElementById('joinGame').onclick = onBoxClick;
     document.getElementById('signOutBtn').onclick = async function () {
         document.getElementById('signOutBtn').disabled = true;
         await signOut(
@@ -25,7 +25,9 @@ window.onload = async function() {
 }
 
 function onPageLoaded() {
-    document.getElementsByTagName('body')[0].style.display = 'block';
+    document.getElementById('mainContent').style.display = 'flex';
+    document.getElementById('spinner').style.display = 'none';
+    document.getElementById('spinner').style.animationPlayState = 'paused';
 }
 
 function onAuthenticated(result) {
