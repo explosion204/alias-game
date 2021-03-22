@@ -116,17 +116,20 @@ function initForms() {
 function initValidation() {
     const INVALID_NICKNAME = 'Nickname length must be between 4 and 12 characters';
     const INVALID_PASSWORD = 'Password must contain at least 8 characters';
+    const INVALID_ID = 'Game ID cannot be empty'
 
     let signupNickname = document.getElementById('signupNickname');
     let signupPassword = document.getElementById('signupPassword');
     let signupConfirmPassword = document.getElementById('signupConfirmPassword');
 
     let signinNickname = document.getElementById('signinNickname');
-    let signinPassword = document.getElementById('signinPassword');
+    let signinPassword = document.getElementById('signinPassword'); 
 
     let profileCurrentPassword = document.getElementById('profileCurrentPassword');
     let profileNewPassword = document.getElementById('profileNewPassword');
     let profileConfirmPassword = document.getElementById('profileConfirmPassword');
+
+    let gameId = document.getElementById('gameId');
 
     let signupNicknameError = document.querySelector('#signupNickname + span.error');
     let signupPasswordError = document.querySelector('#signupPassword + span.error');
@@ -139,13 +142,17 @@ function initValidation() {
     let profileNewPasswordError = document.querySelector('#profileNewPassword + span.error');
     let profileConfirmPasswordError = document.querySelector('#profileConfirmPassword + span.error');
 
+    let gameIdError = document.querySelector('#gameId + span.error');
+
     let signupButton = document.getElementById('signupButton');
     let signinButton = document.getElementById('signinButton');
     let changePasswordButton = document.getElementById('changePasswordButton');
+    let joinGameButton = document.getElementById('joinGameButton');
 
     signupButton.disabled = true;
     signinButton.disabled = true;
     changePasswordButton.disabled = true;
+    joinGameButton.disabled = true;
 
     validateInput(signupNickname, signupNicknameError, INVALID_NICKNAME, [signupNickname, signupPassword, signupConfirmPassword], signupButton);
     validateInput(signupPassword, signupPasswordError, INVALID_PASSWORD, [signupNickname, signupPassword, signupConfirmPassword], signupButton);
@@ -157,6 +164,8 @@ function initValidation() {
     validateInput(profileCurrentPassword, profileCurrentPasswordError, INVALID_PASSWORD, [profileCurrentPassword, profileNewPassword, profileConfirmPassword], changePasswordButton);
     validateInput(profileNewPassword, profileNewPasswordError, INVALID_PASSWORD, [profileCurrentPassword, profileNewPassword, profileConfirmPassword], changePasswordButton);
     validateInput(profileConfirmPassword, profileConfirmPasswordError, INVALID_PASSWORD, [profileCurrentPassword, profileNewPassword, profileConfirmPassword], changePasswordButton);
+
+    validateInput(gameId, gameIdError, INVALID_ID, [gameId], joinGameButton);
 }
 
 function validateInput(input, errorSpan, errorMsg, inputs, submitButton) {

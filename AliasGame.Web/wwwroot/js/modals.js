@@ -1,5 +1,10 @@
 function initModals() {
-    modalIds = [['signInBtn', 'signInModal'], ['signUpBtn', 'signUpModal'], ['profile', 'profileModal']]
+    modalIds = [
+        ['signInBtn', 'signInModal'],
+        ['signUpBtn', 'signUpModal'],
+        ['profile', 'profileModal'],
+        ['joinGame', 'joinGameModal']
+    ]
     modals = []
 
     modalIds.forEach(data => {
@@ -22,6 +27,7 @@ function initModals() {
                 modal.style.display = 'none';
 
                 let form = document.querySelector(`#${modal.id} form`);
+                
                 if (form != null) {
                     document.querySelectorAll(`#${modal.id} span.error`).forEach(x => x.style.display = 'none');
                     document.querySelectorAll(`#${modal.id} input`).forEach(x => x.required = false);

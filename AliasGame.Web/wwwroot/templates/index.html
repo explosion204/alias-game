@@ -98,8 +98,24 @@
                     </div>
                 </div>
             </div>
+
+            <div id="joinGameModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Join game</h2>
+                    </div>
+                    <div class="modal-body">
+                        <form id="joinGameForm" name="joinGameForm" class="account-form">
+                            <label>Game ID</label>
+                            <input id="gameId" class="form-element" type="text" name="gameId" minlength="1" maxlength="8">
+                            <span class="error"></span>
+                            <input id="joinGameButton" class="form-submit" type="submit" value="Join">
+                        </form>
+                    </div>
+                </div>
+            </div>
         </aside>
-        
+
         <main class="main-flex-container" id="mainContent">
             <div class="start-game-container">
                 <figure class="box start-game-img" id="startGame"></figure>
