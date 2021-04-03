@@ -27,18 +27,19 @@ namespace AliasGame.Infrastructure
             return _mapper.Map<List<User>>(efUsers);
         }
 
-        public User GetEntity(Guid id)
+        public User GetEntity(string id)
         {
             var efUser = _context.Users.FirstOrDefault(x => x.Id == id);
             return efUser != null ? _mapper.Map<User>(efUser) : null;
         }
 
-        public Guid SaveEntity(User entity)
+        public string SaveEntity(User entity)
         {
             var efUser = _mapper.Map<EfUser>(entity);
             
             if (efUser.Id == default)
             {
+                efUser.Id = Guid.NewGuid().ToString();
                 _context.Entry(efUser).State = EntityState.Added;
             }
             else
@@ -52,7 +53,7 @@ namespace AliasGame.Infrastructure
             return efUser.Id;
         }
 
-        public void DeleteEntity(Guid id)
+        public void DeleteEntity(string id)
         {
             var efUser = _context.Users.FirstOrDefault(x => x.Id == id);
 

@@ -5,6 +5,6 @@ namespace AliasGame.Domain.Models
 {
     public class Entity
     {
-        [Required] public Guid Id { get; set; }
+        [Required] public string Id { get; set; }
     }
 }

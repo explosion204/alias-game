@@ -27,21 +27,31 @@ namespace AliasGame.Infrastructure
             return _mapper.Map<List<Expression>>(efExpressions);
         }
 
-        public Expression GetEntity(Guid id)
+        public Expression GetEntity(string id)
         {
             var efExpression = _context.Expressions.FirstOrDefault(x => x.Id == id);
             return efExpression != null ? _mapper.Map<Expression>(efExpression) : null;
         }
 
-        public Guid SaveEntity(Expression entity)
+        public string SaveEntity(Expression entity)
         {
             var efExpression = _mapper.Map<EfExpression>(entity);
-            _context.Entry(efExpression).State = efExpression.Id == default ? EntityState.Added : EntityState.Modified;
+            
+            if (efExpression.Id == default)
+            {
+                efExpression.Id = Guid.NewGuid().ToString();
+                _context.Entry(efExpression).State = EntityState.Added;
+            }
+            else
+            {
+                _context.Entry(efExpression).State = EntityState.Modified;
+            }
+            
             _context.SaveChanges();
             return efExpression.Id;
         }
 
-        public void DeleteEntity(Guid id)
+        public void DeleteEntity(string id)
         {
             var efExpression = _context.Expressions.FirstOrDefault(x => x.Id == id);
 

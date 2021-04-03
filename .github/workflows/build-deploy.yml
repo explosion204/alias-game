@@ -1,11 +1,5 @@
 ﻿name: build-deploy
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
 env:
   S3_BUCKET_NAME: "elasticbeanstalk-us-west-2-559355273819"
   APP_NAME: "alias-game"

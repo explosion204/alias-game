@@ -4,7 +4,7 @@ namespace AliasGame.Infrastructure.Models
 {
     public class EfUser
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string Nickname { get; set; }
         public string PasswordHash { get; set; }
         public int TotalGames { get; set; }

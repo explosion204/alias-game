@@ -49,6 +49,24 @@ function onNotAuthenticated() {
     onPageLoaded(); 
 }
 
+async function onStartGameClick() {
+    let accessToken = await getAccessToken();
+
+    if (accessToken) {
+        let response = await fetch(`/api/session/create_session/${accessToken}`)
+
+        if (response.ok) {
+            let result = response.json();
+
+            if (result['status'] === true) {
+                
+            }
+        }
+    } else {
+        alert('Access token expired. Please, refresh the page.');
+    }
+}
+
 // DEV: only for test
 async function onBoxClick() {
     let response = await fetch('/dev');

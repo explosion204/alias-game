@@ -27,21 +27,33 @@ namespace AliasGame.Infrastructure
             return _mapper.Map<List<Session>>(efSessions);
         }
 
-        public Session GetEntity(Guid id)
+        public Session GetEntity(string id)
         {
             var efSession = _context.Sessions.FirstOrDefault(x => x.Id == id);
             return efSession != null ? _mapper.Map<Session>(efSession) : null;
         }
 
-        public Guid SaveEntity(Session entity)
+        public string SaveEntity(Session entity)
         {
             var efSession = _mapper.Map<EfSession>(entity);
-            _context.Entry(efSession).State = efSession.Id == default ? EntityState.Added : EntityState.Modified;
+            
+            if (efSession.Id == default)
+            {
+                efSession.Id = Guid.NewGuid().ToString();
+                _context.Entry(efSession).State = EntityState.Added;
+            }
+            else
+            {
+                var entry = _context.Sessions.First(x => x.Id == efSession.Id);
+                _context.Entry(entry).State = EntityState.Detached;
+                _context.Entry(efSession).State = EntityState.Modified;
+            }
+            
             _context.SaveChanges();
             return efSession.Id;
         }
 
-        public void DeleteEntity(Guid id)
+        public void DeleteEntity(string id)
         {
             var efSession = _context.Sessions.FirstOrDefault(x => x.Id == id);
 

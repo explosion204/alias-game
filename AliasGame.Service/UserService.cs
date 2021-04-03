@@ -49,7 +49,7 @@ namespace AliasGame.Service
 
             if (userIdClaim == null || DateTime.UtcNow >= token.ValidTo) return false;
 
-            var user = _dataManager.UserRepository.GetEntity(Guid.Parse(userIdClaim.Value));
+            var user = _dataManager.UserRepository.GetEntity(userIdClaim.Value);
 
             if (user.PasswordHash != ComputeHash(currentPassword)) return false;
             
@@ -66,7 +66,7 @@ namespace AliasGame.Service
 
             if (userIdClaim == null || DateTime.UtcNow >= token.ValidTo) return null;
 
-            var user = _dataManager.UserRepository.GetEntity(Guid.Parse(userIdClaim.Value));
+            var user = _dataManager.UserRepository.GetEntity(userIdClaim.Value);
 
             return user;
         }
@@ -94,7 +94,8 @@ namespace AliasGame.Service
 
         public bool RevokeRefreshToken(string refreshToken)
         {
-            var user = _dataManager.UserRepository.GetAllEntities().FirstOrDefault(x => x.RefreshToken.Token == refreshToken);
+            var user = _dataManager.UserRepository.GetAllEntities().FirstOrDefault(
+                x => x.RefreshToken.Token == refreshToken);
 
             if (user == null) return false;
             if (user.RefreshToken.IsExpired) return false;
@@ -107,7 +108,8 @@ namespace AliasGame.Service
 
         public AuthResponse RefreshAccessToken(string refreshToken)
         {
-            var user = _dataManager.UserRepository.GetAllEntities().FirstOrDefault(x => x.RefreshToken.Token == refreshToken);
+            var user = _dataManager.UserRepository.GetAllEntities().FirstOrDefault(
+                x => x.RefreshToken.Token == refreshToken);
             if (user == null) return null;
 
             if (user.RefreshToken.IsExpired) return null;
