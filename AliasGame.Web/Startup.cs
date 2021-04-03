@@ -43,6 +43,8 @@ namespace AliasGame
             services.AddMapper();
             services.AddAuth(Configuration);
             services.AddAppServices(Configuration);
+            services.AddSignalR();
+            services.AddSignalRCore();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

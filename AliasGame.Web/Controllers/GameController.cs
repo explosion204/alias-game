@@ -55,7 +55,7 @@ namespace AliasGame.Controllers
          * }
          * 
          */
-        [HttpGet("view_session/{accessToken}/{sessionId")]
+        [HttpGet("view_session/{accessToken}/{sessionId}")]
         public IActionResult ViewSession(string accessToken, string sessionId)
         {
             var user = _userService.GetUserInfo(accessToken);
