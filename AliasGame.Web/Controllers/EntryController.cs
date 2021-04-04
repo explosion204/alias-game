@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AliasGame.Controllers
@@ -18,6 +17,13 @@ namespace AliasGame.Controllers
         {
             var content = System.IO.File.ReadAllText(_env.WebRootPath + "/templates/index.html");
             return base.Content(content, "text/html");
+        }
+        
+        [HttpGet("fetch_game_html")]
+        public IActionResult FetchGameHtml()
+        {
+            var content = System.IO.File.ReadAllText(_env.WebRootPath + "/templates/game.html");
+            return Ok(content);
         }
     }
 }

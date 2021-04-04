@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AliasGame.Hubs;
 using AliasGame.Infrastructure;
 using AliasGame.Infrastructure.Database;
 using AliasGame.Service;
@@ -61,6 +62,7 @@ namespace AliasGame
 
             app.UseEndpoints(e =>
             {
+                e.MapHub<MessageHub>("/MessageHub");
                 e.MapControllerRoute("default", "{controller=entry}/{action=index}");
             });
         }

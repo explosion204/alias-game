@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AutoMapper.Internal;
 using Microsoft.AspNetCore.SignalR;
 
@@ -6,26 +7,26 @@ namespace AliasGame.Hubs
 {
     public class MessageHub : Hub
     {
-        private readonly Dictionary<string, List<string>> _sessionsList;
+        private static readonly Dictionary<string, Dictionary<string, List<string>>> _sessionsList = 
+            new Dictionary<string, Dictionary<string, List<string>>>();
+        // _sessionList[sessionId] < userList[userId] < list of connection ids
+        
         private static string _locker = string.Empty;
-
-        public MessageHub()
-        {
-            _sessionsList = new Dictionary<string, List<string>>();
-        }
-
+        
         public void NotifySession(string sessionId, string message)
         {
             lock (_locker)
             {
-                List<string> sessionConnections;
-                var hasConnections = _sessionsList.TryGetValue(sessionId, out sessionConnections);
-
-                if (hasConnections)
+                var hasSession = _sessionsList.TryGetValue(sessionId, out var sessionUsers);
+                
+                if (hasSession)
                 {
-                    sessionConnections.ForAll(
-                        async (uid) => await Clients.Client(uid).SendAsync(message)
-                    );
+                    foreach (var (_, connections) in sessionUsers)
+                    {
+                        connections.ForEach(
+                            async (connId) => await Clients.Client(connId).SendAsync("receive_message", message)
+                        );
+                    }
                 }
             }
         }
@@ -34,16 +35,26 @@ namespace AliasGame.Hubs
         {
             lock (_locker)
             {
-                var hasConnections = _sessionsList.TryGetValue(sessionId, out var userConnections);
-
-                if (hasConnections)
+                var hasSession = _sessionsList.TryGetValue(sessionId, out var sessionUsers);
+                
+                if (hasSession)
                 {
-                    userConnections.Add(userId);
-                    // _sessionsList[sessionId] = userConnections;
+                    var hasUser = sessionUsers.TryGetValue(userId, out var userConnections);
+
+                    if (hasUser)
+                    {
+                        userConnections.Add(Context.ConnectionId);
+                    }
+                    else
+                    {
+                        sessionUsers.Add(userId, new List<string> { Context.ConnectionId });
+                    }
                 }
                 else
                 {
-                    _sessionsList.Add(sessionId, new List<string> { userId });
+                    var users = new Dictionary<string, List<string>>();
+                    users.Add(userId, new List<string> { Context.ConnectionId });
+                    _sessionsList.Add(sessionId, users);
                 }
             }
         }
@@ -52,13 +63,25 @@ namespace AliasGame.Hubs
         {
             lock (_locker)
             {
-                var hasConnections = _sessionsList.TryGetValue(sessionId, out var userConnections);
-
-                if (hasConnections)
+                var hasSession = _sessionsList.TryGetValue(sessionId, out var sessionUsers);
+                
+                if (hasSession)
                 {
-                    userConnections.Remove(userId);
-                    // _sessionsList[sessionId] = userConnections;
+                    var hasUser = sessionUsers.TryGetValue(userId, out var userConnections);
+
+                    if (hasUser)
+                    {
+                        userConnections.Remove(Context.ConnectionId);
+                    }
                 }
+            }
+        }
+
+        public void DeleteSession(string sessionId)
+        {
+            lock (_locker)
+            {
+                _sessionsList.Remove(sessionId);
             }
         }
     }

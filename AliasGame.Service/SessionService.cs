@@ -86,29 +86,32 @@ namespace AliasGame.Service
         {
             var session = _sessionRepository.GetEntity(sessionId);
 
-            if (session == null)
+            if (session == null) return false;
+
+            if (session.FirstPlayerId.Equals(userId))
             {
-                return false;
+                _sessionRepository.DeleteEntity(sessionId);
             }
-            
-            if (session.SecondPlayerId == userId)
+            else if (session.SecondPlayerId.Equals(userId))
             {
                 session.SecondPlayerId = default;
+                _sessionRepository.SaveEntity(session);
             }
-            else if (session.ThirdPlayerId == userId)
+            else if (session.ThirdPlayerId.Equals(userId))
             {
                 session.ThirdPlayerId = default;
+                _sessionRepository.SaveEntity(session);
             }
-            else if (session.FourthPlayerId == userId)
+            else if (session.FourthPlayerId.Equals(userId))
             {
                 session.FourthPlayerId = default;
+                _sessionRepository.SaveEntity(session);
             }
             else
             {
                 return false;
             }
             
-            _sessionRepository.SaveEntity(session);
             return true;
         }
     }

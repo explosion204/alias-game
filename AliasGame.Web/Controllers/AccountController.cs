@@ -23,6 +23,7 @@ namespace AliasGame.Controllers
          *     "status": true/false,
          *     "body":
          *     {
+         *         "userId": "user id",
          *         "nickname": "user nickname",
          *         "totalGames": "user total games",
          *         "wins": "user wins"
@@ -42,6 +43,7 @@ namespace AliasGame.Controllers
                 status = opStatus,
                 body = new
                 {
+                    userId = user?.Id,
                     nickname = user?.Nickname,
                     totalGames = user?.TotalGames,
                     wins = user?.Wins
