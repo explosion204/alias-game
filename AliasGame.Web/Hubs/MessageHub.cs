@@ -67,21 +67,14 @@ namespace AliasGame.Hubs
                 
                 if (hasSession)
                 {
-                    var hasUser = sessionUsers.TryGetValue(userId, out var userConnections);
+                    sessionUsers.Remove(userId);
 
-                    if (hasUser)
+                    if (sessionUsers.Count == 0)
                     {
-                        userConnections.Remove(Context.ConnectionId);
+                        // session clean up
+                        _sessionsList.Remove(sessionId);
                     }
                 }
-            }
-        }
-
-        public void DeleteSession(string sessionId)
-        {
-            lock (_locker)
-            {
-                _sessionsList.Remove(sessionId);
             }
         }
     }
