@@ -45,9 +45,10 @@ namespace AliasGame.Service
             return dict;
         }
 
-        public bool JoinSession(string userId, string sessionId, ISessionService.Team team)
+        public bool JoinSession(string userId, string sessionId, ISessionService.Team team, out int position)
         {
             var session = _sessionRepository.GetEntity(sessionId);
+            position = 0;
 
             if (session != null) return false;
 
@@ -58,6 +59,7 @@ namespace AliasGame.Service
                     {
                         session.SecondPlayerId = userId;
                         _sessionRepository.SaveEntity(session);
+                        position = 2;
                         return true;
                     }
 
@@ -67,12 +69,14 @@ namespace AliasGame.Service
                     {
                         session.ThirdPlayerId = userId;
                         _sessionRepository.SaveEntity(session);
+                        position = 3;
                         return true;
                     }
                     else if (session.FourthPlayerId.Equals(default))
                     {
                         session.FourthPlayerId = userId;
                         _sessionRepository.SaveEntity(session);
+                        position = 4;
                         return true;
                     }
 

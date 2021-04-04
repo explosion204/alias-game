@@ -28,7 +28,7 @@ namespace AliasGame.Controllers
         [HttpPost("create_session/{accessToken}")]
         public IActionResult CreateSession(string accessToken)
         {
-            var user = _userService.GetUserInfo(accessToken);
+            var user = _userService.GetUserFromToken(accessToken);
             var opStatus = user != null;
             string createdSessionId = default;
 
@@ -48,32 +48,37 @@ namespace AliasGame.Controllers
         /*
          * {
          *     "status": true/false,
-         *     "firstPlayerId": "1st player id",
-         *     "secondPlayerId": "2nd player id",
-         *     "thirdPlayerId": "3rd player id"
-         *     "fourthPlayerId": "4th player id"
+         *     "nickname_1": "1st player id",
+         *     "nickname_2": "2nd player id",
+         *     "nickname_3": "3rd player id"
+         *     "nickname_4": "4th player id"
          * }
          * 
          */
         [HttpGet("view_session/{accessToken}/{sessionId}")]
         public IActionResult ViewSession(string accessToken, string sessionId)
         {
-            var user = _userService.GetUserInfo(accessToken);
+            var user = _userService.GetUserFromToken(accessToken);
             var opStatus = user != null;
-            string firstPlayerId = default;
-            string secondPlayerId = default;
-            string thirdPlayerId = default;
-            string fourthPlayerId = default;
+            string firstPlayerNickname = default;
+            string secondPlayerNickname = default;
+            string thirdPlayerNickname = default;
+            string fourthPlayerNickname = default;
             
             if (opStatus)
             {
                 var dict = _sessionService.GetSessionInfo(sessionId);
                 try
                 {
-                    firstPlayerId = dict[1];
-                    secondPlayerId = dict[2];
-                    thirdPlayerId = dict[3];
-                    fourthPlayerId = dict[4];
+                    var firstPlayerId = dict[1];
+                    var secondPlayerId = dict[2];
+                    var thirdPlayerId = dict[3];
+                    var fourthPlayerId = dict[4];
+                    
+                    firstPlayerNickname = _userService.GetUserById(firstPlayerId)?.Id;
+                    secondPlayerNickname = _userService.GetUserById(secondPlayerId)?.Id;
+                    thirdPlayerNickname = _userService.GetUserById(thirdPlayerId)?.Id;
+                    fourthPlayerNickname = _userService.GetUserById(fourthPlayerId)?.Id;
                 }
                 catch (KeyNotFoundException e)
                 {
@@ -84,35 +89,39 @@ namespace AliasGame.Controllers
             return Ok(new
             {
                 status = opStatus,
-                firstPlayerId = firstPlayerId,
-                secondPlayerId = secondPlayerId,
-                thirdPlayerId = thirdPlayerId,
-                fourthPlayerId = fourthPlayerId
+                firstPlayerId = firstPlayerNickname,
+                secondPlayerId = secondPlayerNickname,
+                thirdPlayerId = thirdPlayerNickname,
+                fourthPlayerId = fourthPlayerNickname
             });
         }
 
         
         /*
          * {
-         *     "status": true/false
+         *     "status": true/false,
+         *     "position": 2, 3 or 4
          * }
          * 
          */
         [HttpPost("join_session/{accessToken}/{sessionId}/{teamCode}")]
         public IActionResult JoinSession(string accessToken, string sessionId, int teamCode)
         {
-            var user = _userService.GetUserInfo(accessToken);
+            var user = _userService.GetUserFromToken(accessToken);
             var opStatus = user != null && Enum.IsDefined(typeof(ISessionService.Team), teamCode);
+            var position = 0;
 
             if (opStatus)
             {
                 var team = (ISessionService.Team) teamCode;
-                opStatus = _sessionService.JoinSession(user.Id, sessionId, team);
+                
+                opStatus = _sessionService.JoinSession(user.Id, sessionId, team, out position);
             }
 
             return Ok(new
             {
-                status = opStatus
+                status = opStatus,
+                position = position
             });
         }
 
@@ -125,7 +134,7 @@ namespace AliasGame.Controllers
         [HttpPost("leave_session/{accessToken}/{sessionId}")]
         public IActionResult LeaveSession(string accessToken, string sessionId)
         {
-            var user = _userService.GetUserInfo(accessToken);
+            var user = _userService.GetUserFromToken(accessToken);
             var opStatus = user != null;
 
             if (opStatus)

@@ -59,7 +59,7 @@ namespace AliasGame.Service
             return true;
         }
 
-        public User GetUserInfo(string accessToken)
+        public User GetUserFromToken(string accessToken)
         {
             var token = new JwtSecurityToken(accessToken);
             var userIdClaim = token.Claims.FirstOrDefault(x => x.Type == "unique_name");
@@ -70,7 +70,22 @@ namespace AliasGame.Service
 
             return user;
         }
+
+        public User GetUserById(string userId)
+        {
+            return _dataManager.UserRepository.GetEntity(userId);
+        }
         
+        public User GetUserById(string accessToken, string userId)
+        {
+            var token = new JwtSecurityToken(accessToken);
+            var userIdClaim = token.Claims.FirstOrDefault(x => x.Type == "unique_name");
+
+            if (userIdClaim == null || DateTime.UtcNow >= token.ValidTo) return null;
+
+            return GetUserById(userId);
+        }
+
         public AuthResponse Authenticate(string nickname, string password)
         {
             var passwordHash = ComputeHash(password);

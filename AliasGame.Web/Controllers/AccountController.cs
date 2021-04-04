@@ -21,13 +21,10 @@ namespace AliasGame.Controllers
         /*
          * {
          *     "status": true/false,
-         *     "body":
-         *     {
-         *         "userId": "user id",
-         *         "nickname": "user nickname",
-         *         "totalGames": "user total games",
-         *         "wins": "user wins"
-         *     }
+         *     "userId": "user id",
+         *     "nickname": "user nickname",
+         *     "totalGames": "user total games",
+         *     "wins": "user wins"
          * }
          * false status means that access token is invalid or expired,
          * use refresh token to obtain new access key
@@ -35,19 +32,16 @@ namespace AliasGame.Controllers
         [HttpGet("is_authenticated/{accessToken}")]
         public IActionResult IsAuthenticated(string accessToken)
         {
-            var user = _userService.GetUserInfo(accessToken);
+            var user = _userService.GetUserFromToken(accessToken);
             var opStatus = user != null;
 
             return Ok(new
             {
                 status = opStatus,
-                body = new
-                {
-                    userId = user?.Id,
-                    nickname = user?.Nickname,
-                    totalGames = user?.TotalGames,
-                    wins = user?.Wins
-                }
+                userId = user?.Id,
+                nickname = user?.Nickname,
+                totalGames = user?.TotalGames,
+                wins = user?.Wins
             });
         }
 
@@ -103,10 +97,7 @@ namespace AliasGame.Controllers
          *     {
          *         "fieldName": "error desc"
          *     },
-         *     "body":
-         *     {
-         *         "accessToken": "access token"
-         *     }
+         *     "accessToken": "access token"
          *    
          * }
          */
@@ -137,7 +128,7 @@ namespace AliasGame.Controllers
             {
                 status = opStatus,
                 validationErrors = errors,
-                body = response
+                accessToken = response?.AccessToken
             });
         }
 

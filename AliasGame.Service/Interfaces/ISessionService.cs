@@ -12,7 +12,7 @@ namespace AliasGame.Service.Interfaces
         
         string CreateSession(string userId);
         Dictionary<int, string> GetSessionInfo(string sessionId);
-        bool JoinSession(string userId, string sessionId, Team team);
+        bool JoinSession(string userId, string sessionId, Team team, out int position);
         bool LeaveSession(string userId, string sessionId);
     }
 }
