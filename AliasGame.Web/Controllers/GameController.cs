@@ -75,10 +75,10 @@ namespace AliasGame.Controllers
                     var thirdPlayerId = dict[3];
                     var fourthPlayerId = dict[4];
                     
-                    firstPlayerNickname = _userService.GetUserById(firstPlayerId)?.Id;
-                    secondPlayerNickname = _userService.GetUserById(secondPlayerId)?.Id;
-                    thirdPlayerNickname = _userService.GetUserById(thirdPlayerId)?.Id;
-                    fourthPlayerNickname = _userService.GetUserById(fourthPlayerId)?.Id;
+                    firstPlayerNickname = _userService.GetUserById(firstPlayerId)?.Nickname;
+                    secondPlayerNickname = _userService.GetUserById(secondPlayerId)?.Nickname;
+                    thirdPlayerNickname = _userService.GetUserById(thirdPlayerId)?.Nickname;
+                    fourthPlayerNickname = _userService.GetUserById(fourthPlayerId)?.Nickname;
                 }
                 catch (KeyNotFoundException e)
                 {
@@ -89,10 +89,10 @@ namespace AliasGame.Controllers
             return Ok(new
             {
                 status = opStatus,
-                firstPlayerId = firstPlayerNickname,
-                secondPlayerId = secondPlayerNickname,
-                thirdPlayerId = thirdPlayerNickname,
-                fourthPlayerId = fourthPlayerNickname
+                nickname_1 = firstPlayerNickname,
+                nickname_2 = secondPlayerNickname,
+                nickname_3 = thirdPlayerNickname,
+                nickname_4 = fourthPlayerNickname
             });
         }
 

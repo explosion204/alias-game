@@ -21,9 +21,9 @@ namespace AliasGame.Service
             {
                 Id = default,
                 FirstPlayerId = userId,
-                SecondPlayerId = default,
-                ThirdPlayerId = default,
-                FourthPlayerId = default
+                SecondPlayerId = null,
+                ThirdPlayerId = null,
+                FourthPlayerId = null
             };
 
             return _sessionRepository.SaveEntity(session);
@@ -50,12 +50,12 @@ namespace AliasGame.Service
             var session = _sessionRepository.GetEntity(sessionId);
             position = 0;
 
-            if (session != null) return false;
+            if (session == null) return false;
 
             switch (team)
             {
                 case ISessionService.Team.TeamOne:
-                    if (session.SecondPlayerId.Equals(default))
+                    if (session.SecondPlayerId == null)
                     {
                         session.SecondPlayerId = userId;
                         _sessionRepository.SaveEntity(session);
@@ -65,14 +65,14 @@ namespace AliasGame.Service
 
                     return false;
                 case ISessionService.Team.TeamTwo:
-                    if (session.ThirdPlayerId.Equals(default))
+                    if (session.ThirdPlayerId == null)
                     {
                         session.ThirdPlayerId = userId;
                         _sessionRepository.SaveEntity(session);
                         position = 3;
                         return true;
                     }
-                    else if (session.FourthPlayerId.Equals(default))
+                    else if (session.FourthPlayerId == null)
                     {
                         session.FourthPlayerId = userId;
                         _sessionRepository.SaveEntity(session);
@@ -92,23 +92,23 @@ namespace AliasGame.Service
 
             if (session == null) return false;
 
-            if (session.FirstPlayerId.Equals(userId))
+            if (session.FirstPlayerId == userId)
             {
                 _sessionRepository.DeleteEntity(sessionId);
             }
-            else if (session.SecondPlayerId.Equals(userId))
+            else if (session.SecondPlayerId == userId)
             {
-                session.SecondPlayerId = default;
+                session.SecondPlayerId = null;
                 _sessionRepository.SaveEntity(session);
             }
-            else if (session.ThirdPlayerId.Equals(userId))
+            else if (session.ThirdPlayerId == userId)
             {
-                session.ThirdPlayerId = default;
+                session.ThirdPlayerId = null;
                 _sessionRepository.SaveEntity(session);
             }
-            else if (session.FourthPlayerId.Equals(userId))
+            else if (session.FourthPlayerId == userId)
             {
-                session.FourthPlayerId = default;
+                session.FourthPlayerId = null;
                 _sessionRepository.SaveEntity(session);
             }
             else
