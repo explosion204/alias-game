@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AliasGame.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -74,11 +75,18 @@ namespace AliasGame.Controllers
                     var secondPlayerId = dict[2];
                     var thirdPlayerId = dict[3];
                     var fourthPlayerId = dict[4];
-                    
-                    firstPlayerNickname = _userService.GetUserById(firstPlayerId)?.Nickname;
-                    secondPlayerNickname = _userService.GetUserById(secondPlayerId)?.Nickname;
-                    thirdPlayerNickname = _userService.GetUserById(thirdPlayerId)?.Nickname;
-                    fourthPlayerNickname = _userService.GetUserById(fourthPlayerId)?.Nickname;
+
+                    if (dict.Values.All(x => x != user.Id))
+                    {
+                        firstPlayerNickname = _userService.GetUserById(firstPlayerId)?.Nickname;
+                        secondPlayerNickname = _userService.GetUserById(secondPlayerId)?.Nickname;
+                        thirdPlayerNickname = _userService.GetUserById(thirdPlayerId)?.Nickname;
+                        fourthPlayerNickname = _userService.GetUserById(fourthPlayerId)?.Nickname;
+                    }
+                    else
+                    {
+                        opStatus = false;
+                    }
                 }
                 catch (KeyNotFoundException e)
                 {
