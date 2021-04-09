@@ -111,6 +111,36 @@ function initForms() {
         this.disabled = false;
         return false;
     }
+
+    document.getElementById('joinGameButton').onclick = async function () {
+        this.disabled = true;
+        let formData = new FormData(document.forms.joinGameForm);
+        let sessionId = formData.get('gameId');
+
+        await viewGame(sessionId, 
+            async function (result) {
+                document.getElementById('joinGameModal').style.display = 'none';
+
+                let userId = localStorage.getItem('userId');
+                let firstPlayer = result['nickname_1'];
+                let secondPlayer = result['nickname_2'];
+                let thirdPlayer = result['nickname_3'];
+                let fourthPlayer = result['nickname_4'];
+                let gameLayout = await fetchGameLayout(sessionId, firstPlayer, 
+                    secondPlayer, thirdPlayer, fourthPlayer);
+
+                await setupGameLayout(gameLayout, sessionId, userId);
+                
+            },
+            function () {
+                document.querySelector('#gameId + span.error').style.display = 'block';
+                document.querySelector('#gameId + span.error').textContent = 'Game ID is invalid. Maybe you are already connected?';
+                document.forms.joinGameForm.reset();
+            }
+        )
+
+        this.disabled = false;
+    }
 }
 
 function initValidation() {

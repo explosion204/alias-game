@@ -1,21 +1,21 @@
 <section class="lobby-id-container">
     <span id="lobby-id">Game ID (also progress bar)</span>
     <span class="label">Share it with your friends</span>
-    <span class="label bold-label" title="Players in lobby">1 / 4</span>
+    <span class="label bold-label" title="Players in lobby"><span id="totalPlayers">1</span> / 4</span>
 </section>
 
 <section class="game-area-container">
     <div class="side-container">
-        <div class="join-team-btn">Join team #1</div>
+        <div id="join-first-team-btn" class="join-team-btn">Join team #1</div>
         <div class="team-box">
-           <div class="player active">Player 1 <span>(creator)</span></div>
-           <div class="player">Empty slot</div>
+           <div id="first-player" class="player">Player 1 <span>(creator)</span></div>
+           <div id="second-player" class="player">Empty slot</div>
            <div class="score" title="Score">0</div>
         </div>
-        <div class="join-team-btn">Join team #2</div>
+        <div id="join-second-team-btn" class="join-team-btn">Join team #2</div>
         <div class="team-box">
-            <div class="player">Empty slot</div>
-            <div class="player">Empty slot</div>
+            <div id="third-player" class="player">Empty slot</div>
+            <div id="fourth-player" class="player">Empty slot</div>
             <div class="score" title="Score">0</div>
         </div>
         <div class="backlog">

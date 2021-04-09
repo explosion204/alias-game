@@ -98,9 +98,10 @@ async function signIn(nickname, password, onSuccess, onFailure) {
     });
 
     if (response.ok) {
+        console.log('sign in');
         let result = await response.json();
         if (result['status'] === true) {
-            window.localStorage.setItem('accessToken', result['body']['accessToken']);
+            window.localStorage.setItem('accessToken', result['accessToken']);
 
             onSuccess();
         } else {

@@ -61,8 +61,9 @@ address {
     cursor: pointer;
 }
 
-.nav-button:disabled {
+.nav-button[disabled] {
     background-color: rgba(9, 120, 194, 0.5);
+    pointer-events: none;
 }
 
 .nav-flex-container .logo {
@@ -226,6 +227,11 @@ address {
     border: 1px rgb(9, 120, 194) solid;
     background-color: white;
     color: rgb(9, 120, 194);
+}
+
+.join-team-btn[disabled] {
+    background-color: rgba(9, 120, 194, 0.5);
+    pointer-events: none;
 }
 
 .player {
