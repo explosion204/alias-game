@@ -16,12 +16,20 @@ async function setupGameLayout(gameLayout, sessionId, userId) {
     document.getElementById('join-first-team-btn').onclick = async function (e) {
         document.querySelectorAll('.join-team-btn').forEach(x => x.setAttribute('disabled', 'disabled'));
         await joinGame(1);
-    }
+    };
 
     document.getElementById('join-second-team-btn').onclick = async function (e) {
         document.querySelectorAll('.join-team-btn').forEach(x => x.setAttribute('disabled', 'disabled'));
         await joinGame(2);
-    }
+    };
+
+    document.getElementById('start-round-button').onclick = function (e) {
+        let userId = localStorage.getItem('userId');
+        let sessionId = localStorage.getItem('sessionId');
+
+        onTimerStarted();
+        notifyTimerStarted(userId, sessionId);
+    };
 
     await initSignalRConnection();
     subscribe(sessionId, userId);
@@ -38,7 +46,6 @@ async function setupGameLayout(gameLayout, sessionId, userId) {
         return '';
     }
 }
-
 
 async function fetchGameLayout(sessionId, firstPlayer, secondPlayer = "", thirdPlayer = "", fourthPlayer = "") {
     let response = await fetch('/fetch_game_html');
@@ -95,7 +102,19 @@ function onUserConnected(userNickname, position) {
     let totalPlayers = Number.parseInt(totalPlayersSpan.innerText);
     totalPlayersSpan.innerText = ++totalPlayers;
 
+    if (!localStorage.getItem('questioning') && !localStorage.getItem('answering')) {
+        localStorage.setItem('questioning', 1);
+        localStorage.setItem('answering', 2);
+    }
+
+    if (totalPlayers == 4) {
+        document.getElementById('lobby-players-span').style.display = 'none';
     
+        if (localStorage.getItem('position') == localStorage.getItem('questioning')) {
+            document.getElementById('start-round-button').style.display = 'block';
+        }
+    }
+
     switch (position) {
         case 2:
             document.getElementById('second-player').innerText = userNickname;
@@ -144,6 +163,37 @@ function onUserDisconnected(position) {
 
     if (localStorage.getItem('position') != null) {
         updateJoinButtons(position);
+    }
+}
+
+function onTimerStarted() {
+    let progressBar = document.querySelector('.lobby-id-container');
+    let lobbyId = document.getElementById('lobby-id');
+    let lobbyPlayersSpan = document.getElementById('lobby-players-span');
+    let startRoundButton = document.getElementById('start-round-button');
+    
+    lobbyId.style.display = 'none';
+    lobbyPlayersSpan.style.display = 'none';
+    startRoundButton.style.display = 'none';
+
+    if (window.Worker) {
+        let timerWorker = new Worker('/js/game.timer.js');
+        timerWorker.postMessage([5]);
+        timerWorker.onmessage = function (e) {
+            let message = e.data[0];
+
+            switch (message) {
+                case 'update':
+                    let width = e.data[1];
+                    progressBar.style.width = width + "%";
+                    break;
+                case 'finished':
+                    lobbyId.style.display = 'block';
+                    startRoundButton.style.display = 'block';
+                    progressBar.style.width = '100%';
+                    break;
+            }
+        }
     }
 }
 

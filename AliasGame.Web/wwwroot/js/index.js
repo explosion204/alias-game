@@ -10,6 +10,8 @@ window.addEventListener('load', async function() {
         await createGame(async function (result) {
             localStorage.setItem('sessionId', result['sessionId']);
             localStorage.setItem('position', 1);
+            localStorage.setItem('questioning', 1);
+            localStorage.setItem('answering', 2);
 
             let sessionId = result['sessionId'];
             let userId = localStorage.getItem('userId');

@@ -104,12 +104,16 @@ async function leaveGame() {
  * }
  * 
  * MESSAGE TYPES:
+ * 
  * (1) user_connected
- * args: sender_id, user_nickname, position (2, 3 or 4)
+ * args: user_nickname, position (2, 3 or 4)
+ * 
  * (2) user_disconnected
- * args: sender_id, position(2, 3 or 4)
+ * args: position(2, 3 or 4)
+ * 
  * (3) session_closed
- * args: sender_id
+ * 
+ * (4) timer_started
  */
 
 /**
@@ -127,84 +131,100 @@ async function initSignalRConnection() {
 
 function subscribe(sessionId, userId) {
     if (connection != null) {
-        connection.invoke("Subscribe", sessionId, userId);
+        connection.invoke('Subscribe', sessionId, userId);
     }
 }
 
 function unsubscribe(sessionId, userId) {
     if (connection != null) {
-        connection.invoke("Unsubscribe", sessionId, userId);
+        connection.invoke('Unsubscribe', sessionId, userId);
     }
 }
 
 function setHandlers() {
     if (connection != null) {
-        connection.on("receive_message", function (message) {
+        connection.on('receive_message', function (message) {
             let json = JSON.parse(message);
             let messageType = json['message_type'];
-            let senderId = json['sender_id'];
+
             console.log(json);
 
-            if (senderId !== localStorage.getItem('userId')) {
-                switch (messageType) {
-                    case "user_connected": {
-                        let userNickname = json['user_nickname'];
-                        let position = json['position'];
-                        onUserConnected(userNickname, position);
-                        break;
-                    }
-                    case "user_disconnected": {
-                        let position = json['position'];
-                        onUserDisconnected(position);
-                        break;
-                    }
-                    case "session_closed": {
-                        onSessionClosed();
-                        break;
-                    } 
+            switch (messageType) {
+                case 'user_connected': {
+                    let userNickname = json['user_nickname'];
+                    let position = json['position'];
+                    onUserConnected(userNickname, position);
+                    break;
+                }
+                case 'user_disconnected': {
+                    let position = json['position'];
+                    onUserDisconnected(position);
+                    break;
+                }
+                case 'session_closed': {
+                    onSessionClosed();
+                    break;
+                }
+                case 'timer_started': {
+                    onTimerStarted();
+                    break;
                 }
             }
         });
     }
 }
 
-function notifySession(sessionId, message) {
+function notifySession(sessionId, senderId, message) {
     if (connection != null) {
-        connection.invoke("NotifySession", sessionId, message);
+        connection.invoke('NotifySession', sessionId, senderId, message);
     }
 }
 
 function notifyConnected(senderId, sessionId, userNickname, position) {
     let message = {
-        "message_type": "user_connected",
-        "sender_id": senderId,
-        "user_nickname": userNickname,
-        "position": position
+        'message_type': 'user_connected',
+        'user_nickname': userNickname,
+        'position': position
     };
     let json = JSON.stringify(message);
-    notifySession(sessionId, json); 
+    notifySession(sessionId, senderId, json); 
     onUserConnected(userNickname, position);
 }
 
 function notifyDisconnected(senderId, sessionId, position) {
     let message = {
-        "message_type": "user_disconnected",
-        "sender_id": senderId,
-        "position": position
+        'message_type': 'user_disconnected',
+        'position': position
     };
     let json = JSON.stringify(message);
-    notifySession(sessionId, json);
+    notifySession(sessionId, senderId, json);
 }
 
 function notifySessionClosed(senderId, sessionId) {
     let message = {
-        "message_type": "session_closed",
-        "sender_id": senderId
+        'message_type': 'session_closed'
     };
     let json = JSON.stringify(message);
-    notifySession(sessionId, json);
+    notifySession(sessionId, senderId, json);
     clearGameData();
 }
+
+function notifyTimerStarted(senderId, sessionId) {
+    let message = {
+        'message_type': 'timer_started'
+    };
+    let json = JSON.stringify(message);
+    notifySession(sessionId, senderId, json);
+}
+
+// function notifyTimerStopped(senderId, sessionId) {
+//     let message = {
+//         'message_type': 'timer_started'
+//     };
+//     let json = JSON.stringify(message);
+//     notifySession(sessionId, senderId, json);
+// }
+
 
 function clearGameData() {
     localStorage.removeItem('firstPlayer');
