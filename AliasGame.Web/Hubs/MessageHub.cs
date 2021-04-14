@@ -13,7 +13,7 @@ namespace AliasGame.Hubs
         
         private static string _locker = string.Empty;
         
-        public void NotifySession(string sessionId, string message)
+        public void NotifySession(string sessionId, string senderId, string message)
         {
             lock (_locker)
             {
@@ -21,12 +21,15 @@ namespace AliasGame.Hubs
                 
                 if (hasSession)
                 {
-                    foreach (var (_, connections) in sessionUsers)
-                    {
-                        connections.ForEach(
-                            async (connId) => await Clients.Client(connId).SendAsync("receive_message", message)
+                    sessionUsers
+                        .Where(u => u.Key != senderId) // filtering users to exclude sender
+                        .ForAll(connections => 
+                            connections.Value
+                                .ForAll(
+                                    async (connId) => await Clients.Client(connId).SendAsync("receive_message", message)
+                                )
                         );
-                    }
+                    
                 }
             }
         }
