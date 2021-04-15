@@ -59,6 +59,13 @@ async function joinGame(teamCode) {
             if (result['status'] === true) {
                 let positionInTeam = result['position'];
                 localStorage.setItem('position', positionInTeam);
+                localStorage.setItem('questioning', 1);
+                localStorage.setItem('answering', 2);
+                localStorage.setItem('playedAsQuestioner1', 1);
+                localStorage.setItem('playedAsQuestioner2', 0);
+                localStorage.setItem('playedAsQuestioner3', 0);
+                localStorage.setItem('playedAsQuestioner4', 0);
+                localStorage.setItem('timerOwner', false);
             
                 notifyConnected(userId, sessionId, userNickname, positionInTeam);
             }
@@ -91,7 +98,25 @@ async function leaveGame() {
     }
 }
 
+function nextRound() {
+    let questioning = localStorage.getItem('questioning');
+    let sessionId = localStorage.getItem('sessionId');
+    let userId = localStorage.getItem('userId');
 
+    switch (questioning) {
+        case '1':
+        case '2': {
+            notifyRoundFinished(userId, sessionId, 1);
+            break;
+        }
+        case '3':
+        case '4':
+        {
+            notifyRoundFinished(userId, sessionId, 2);
+            break;
+        }
+    }
+}
 
 /**
  * MESSAGE-BASED INTERACTION FORMAT:
@@ -114,6 +139,9 @@ async function leaveGame() {
  * (3) session_closed
  * 
  * (4) timer_started
+ * 
+ * (5) round_finished
+ * args: current_team_code (1 or 2)
  */
 
 /**
@@ -147,8 +175,6 @@ function setHandlers() {
             let json = JSON.parse(message);
             let messageType = json['message_type'];
 
-            console.log(json);
-
             switch (messageType) {
                 case 'user_connected': {
                     let userNickname = json['user_nickname'];
@@ -167,6 +193,12 @@ function setHandlers() {
                 }
                 case 'timer_started': {
                     onTimerStarted();
+                    break;
+                }
+                case 'round_finished': {
+                    console.log(json);
+                    let currentTeamCode = json['current_team_code'];
+                    onRoundFinished(currentTeamCode);
                     break;
                 }
             }
@@ -225,6 +257,16 @@ function notifyTimerStarted(senderId, sessionId) {
 //     notifySession(sessionId, senderId, json);
 // }
 
+function notifyRoundFinished(senderId, sessionId, currentTeamCode) {
+    let message = {
+        'message_type': 'round_finished',
+        'current_team_code': currentTeamCode
+    };
+    let json = JSON.stringify(message);
+    notifySession(sessionId, senderId, json);
+    onRoundFinished(currentTeamCode);
+}
+
 
 function clearGameData() {
     localStorage.removeItem('firstPlayer');
@@ -233,4 +275,11 @@ function clearGameData() {
     localStorage.removeItem('fourthPlayer');
     localStorage.removeItem('sessionId');
     localStorage.removeItem('position');
+    localStorage.removeItem('questioning');
+    localStorage.removeItem('answering');
+    localStorage.removeItem('playedAsQuestioner1');
+    localStorage.removeItem('playedAsQuestioner2');
+    localStorage.removeItem('playedAsQuestioner3');
+    localStorage.removeItem('playedAsQuestioner4');
+    localStorage.removeItem('timerOwner');
 }

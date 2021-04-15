@@ -226,6 +226,7 @@ address {
 
 .start-round-btn {
     border: 1px white solid;
+    margin: auto auto;
 }
 
 .join-team-btn:hover {

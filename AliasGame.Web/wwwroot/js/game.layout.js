@@ -26,6 +26,7 @@ async function setupGameLayout(gameLayout, sessionId, userId) {
     document.getElementById('start-round-button').onclick = function (e) {
         let userId = localStorage.getItem('userId');
         let sessionId = localStorage.getItem('sessionId');
+        localStorage.setItem('timerOwner', true);
 
         onTimerStarted();
         notifyTimerStarted(userId, sessionId);
@@ -109,6 +110,7 @@ function onUserConnected(userNickname, position) {
 
     if (totalPlayers == 4) {
         document.getElementById('lobby-players-span').style.display = 'none';
+        document.getElementById('lobby-id').style.display = 'none';
     
         if (localStorage.getItem('position') == localStorage.getItem('questioning')) {
             document.getElementById('start-round-button').style.display = 'block';
@@ -168,11 +170,11 @@ function onUserDisconnected(position) {
 
 function onTimerStarted() {
     let progressBar = document.querySelector('.lobby-id-container');
-    let lobbyId = document.getElementById('lobby-id');
+    // let lobbyId = document.getElementById('lobby-id');
     let lobbyPlayersSpan = document.getElementById('lobby-players-span');
     let startRoundButton = document.getElementById('start-round-button');
     
-    lobbyId.style.display = 'none';
+    // lobbyId.style.display = 'none';
     lobbyPlayersSpan.style.display = 'none';
     startRoundButton.style.display = 'none';
 
@@ -188,8 +190,11 @@ function onTimerStarted() {
                     progressBar.style.width = width + "%";
                     break;
                 case 'finished':
-                    lobbyId.style.display = 'block';
-                    startRoundButton.style.display = 'block';
+                    if (localStorage.getItem('timerOwner') === 'true') {
+                        localStorage.setItem('timerOwner', false);
+                        nextRound();
+                    }
+
                     progressBar.style.width = '100%';
                     break;
             }
@@ -235,5 +240,65 @@ function updateJoinButtons(position) {
 
 function onSessionClosed() {
     alert('Session is closed by creator.');
+    clearGameData();
     location.reload();
+}
+
+function onRoundFinished(currentTeamCode) {
+    let questioning;
+    let answering;
+
+    if (currentTeamCode == 1) {
+        let playedAsQuestioner3 = localStorage.getItem('playedAsQuestioner3');
+        let playedAsQuestioner4 = localStorage.getItem('playedAsQuestioner4');
+
+        if (playedAsQuestioner3 < playedAsQuestioner4) {
+            questioning = 3;
+            answering = 4;
+            playedAsQuestioner3++;
+            localStorage.setItem('playedAsQuestioner3', playedAsQuestioner3);
+        } else {
+            questioning = 4;
+            answering = 3;
+            playedAsQuestioner4++;
+            localStorage.setItem('playedAsQuestioner4', playedAsQuestioner4);
+        }
+    } else {
+        let playedAsQuestioner1 = localStorage.getItem('playedAsQuestioner1');
+        let playedAsQuestioner2 = localStorage.getItem('playedAsQuestioner2');
+
+        if (playedAsQuestioner1 < playedAsQuestioner2) {
+            questioning = 1;
+            answering = 2;
+            playedAsQuestioner1++;
+            localStorage.setItem('playedAsQuestioner1', playedAsQuestioner1);
+        } else {
+            questioning = 2;
+            answering = 1;
+            playedAsQuestioner2++;
+            localStorage.setItem('playedAsQuestioner2', playedAsQuestioner2);
+        }
+    }
+
+    localStorage.setItem('questioning', questioning);
+    localStorage.setItem('answering', answering);
+
+    updateGameField();
+}
+
+// word area & start button
+function updateGameField() {
+    let startRoundButton = document.getElementById('start-round-button');
+    let position = localStorage.getItem('position');
+    let questioning = localStorage.getItem('questioning');
+    let answering = localStorage.getItem('answering');
+
+    if (position == questioning) {
+        startRoundButton.style.display = 'block';
+    } else if (position == answering) {
+        startRoundButton.style.display = 'none';
+        // TODO: word area
+    } else {
+        startRoundButton.style.display = 'none';
+    }
 }

@@ -12,6 +12,11 @@ window.addEventListener('load', async function() {
             localStorage.setItem('position', 1);
             localStorage.setItem('questioning', 1);
             localStorage.setItem('answering', 2);
+            localStorage.setItem('playedAsQuestioner1', 1);
+            localStorage.setItem('playedAsQuestioner2', 0);
+            localStorage.setItem('playedAsQuestioner3', 0);
+            localStorage.setItem('playedAsQuestioner4', 0);
+            localStorage.setItem('timerOwner', false); // user becomes a timer owner only when clicks 'start' button
 
             let sessionId = result['sessionId'];
             let userId = localStorage.getItem('userId');
