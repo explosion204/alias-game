@@ -301,4 +301,25 @@ function updateGameField() {
     } else {
         startRoundButton.style.display = 'none';
     }
+
+    document.querySelectorAll('.player').forEach(x => x.classList.remove('active'));
+
+    switch (questioning) {
+        case '1': {
+            document.getElementById('first-player').classList.add('active');
+            break;
+        }
+        case '2': {
+            document.getElementById('second-player').classList.add('active');
+            break;
+        }
+        case '3': {
+            document.getElementById('third-player').classList.add('active');
+            break;
+        }
+        case '4': {
+            document.getElementById('fourth-player').classList.add('active');
+            break;
+        }
+    }
 }
