@@ -132,8 +132,12 @@ function onUserConnected(userNickname, position) {
             break;
     }
 
-    if (!localStorage.getItem('position')) {
+    if (localStorage.getItem('position') != null) {
         updateJoinButtons(position);
+    } else if (position == 2) {
+        document.getElementById('join-first-team-btn').removeAttribute('disabled', 'disabled');
+    } else {
+        document.getElementById('join-second-team-btn').removeAttribute('disabled', 'disabled');
     }
 }
 
