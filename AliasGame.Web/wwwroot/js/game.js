@@ -107,12 +107,14 @@ function nextRound() {
         case '1':
         case '2': {
             notifyRoundFinished(userId, sessionId, 1);
+            onRoundFinished(1);
             break;
         }
         case '3':
         case '4':
         {
             notifyRoundFinished(userId, sessionId, 2);
+            onRoundFinished(2);
             break;
         }
     }
@@ -141,7 +143,10 @@ function nextRound() {
  * (4) timer_started
  * 
  * (5) round_finished
- * args: current_team_code (1 or 2)
+ * args: current_team_code (1 or 2)\
+ * 
+ * (6) backlog_updated
+ * args: team_code, word, status('accepted', 'rejected')
  */
 
 /**
@@ -196,9 +201,15 @@ function setHandlers() {
                     break;
                 }
                 case 'round_finished': {
-                    console.log(json);
                     let currentTeamCode = json['current_team_code'];
                     onRoundFinished(currentTeamCode);
+                    break;
+                }
+                case 'backlog_updated': {
+                    let teamCode = Number.parseInt(json['team_code']);
+                    let word = json['word'];
+                    let status = json['status'];
+                    updateBacklog(teamCode, word, status);
                     break;
                 }
             }
@@ -264,9 +275,18 @@ function notifyRoundFinished(senderId, sessionId, currentTeamCode) {
     };
     let json = JSON.stringify(message);
     notifySession(sessionId, senderId, json);
-    onRoundFinished(currentTeamCode);
 }
 
+function notifyBacklogUpdated(senderId, sessionId, teamCode, word, status) {
+    let message = {
+        'message_type': 'backlog_updated',
+        'team_code': teamCode,
+        'word': word,
+        'status': status
+    }
+    let json = JSON.stringify(message);
+    notifySession(sessionId, senderId, json);
+}
 
 function clearGameData() {
     localStorage.removeItem('firstPlayer');

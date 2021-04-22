@@ -25,6 +25,8 @@ window.addEventListener('load', async function() {
 
             await setupGameLayout(gameLayout, sessionId, userId);
             document.querySelectorAll('.join-team-btn').forEach(x => x.setAttribute('disabled', 'disabled'));
+            document.getElementById('accept-btn').style.display = 'inherit';
+            document.getElementById('reject-btn').style.display = 'inherit';
             stopLoadingAnimation();
         }, function () {
             alert('You are not authorized');

@@ -13,15 +13,15 @@
         <div class="team-box">
            <div id="first-player" class="player active">Player 1 <span>(creator)</span></div>
            <div id="second-player" class="player">Empty slot</div>
-           <div class="score" title="Score">0</div>
+           <div id="score1" class="score" title="Score">0</div>
         </div>
         <div id="join-second-team-btn" class="join-team-btn">Join team #2</div>
         <div class="team-box">
             <div id="third-player" class="player">Empty slot</div>
             <div id="fourth-player" class="player">Empty slot</div>
-            <div class="score" title="Score">0</div>
+            <div id="score2" class="score" title="Score">0</div>
         </div>
-        <div class="backlog">
+        <div id="backlog" class="backlog">
             <!-- <div class="expr">
                 <span class="accepted">expression</span>
                 <img class="vote-btn" width="20rem" height="20rem" src="/img/up.png" title="Accept">
@@ -35,14 +35,14 @@
         </div>
     </div>
     <div class="word-area">
-        <div class="word">VERY BIG WORD</div>
+        <div id="word" class="word">word</div>
         <div class="next-word">
-            <div class="float accepted" title="Accept">
+            <div id="accept-btn" class="float accepted" title="Accept" style="display: none;">
                 <div class="float-body">
                     <img width="30rem" height="30rem" src="/img/check.png">
                 </div>
             </div>
-            <div class="float rejected" title="Reject"> 
+            <div id="reject-btn" class="float rejected" title="Reject" style="display: none;"> 
                 <div class="float-body">
                     <img width="30rem" height="30rem" src="/img/cross.png">
                 </div>

@@ -32,6 +32,30 @@ async function setupGameLayout(gameLayout, sessionId, userId) {
         notifyTimerStarted(userId, sessionId);
     };
 
+    document.getElementById('accept-btn').onclick = function (e) {
+        let userId = localStorage.getItem('userId');
+        let sessionId = localStorage.getItem('sessionId');
+        let position = localStorage.getItem('position');
+        let word = document.getElementById('word').innerText;
+
+        let teamCode = (position === '1' || position === '2') ? 1 : 2;
+
+        notifyBacklogUpdated(userId, sessionId, teamCode, word, 'accepted');
+        updateBacklog(teamCode, word, 'accepted');
+    }
+
+    document.getElementById('reject-btn').onclick = function (e) {
+        let userId = localStorage.getItem('userId');
+        let sessionId = localStorage.getItem('sessionId');
+        let position = localStorage.getItem('position');
+        let word = document.getElementById('word').innerText;
+
+        let teamCode = (position === '1' || position === '2') ? 1 : 2;
+
+        notifyBacklogUpdated(userId, sessionId, teamCode, word, 'rejected');
+        updateBacklog(teamCode, word, 'rejected');
+    }
+
     await initSignalRConnection();
     subscribe(sessionId, userId);
     // window.onbeforeunload = function (e) {
@@ -132,12 +156,15 @@ function onUserConnected(userNickname, position) {
             break;
     }
 
-    if (localStorage.getItem('position') != null) {
+    // if (localStorage.getItem('position') != null) {
+    //     updateJoinButtons(position);
+    // } else if (position == 2) {
+    //     document.getElementById('join-first-team-btn').removeAttribute('disabled', 'disabled');
+    // } else {
+    //     document.getElementById('join-second-team-btn').removeAttribute('disabled', 'disabled');
+    // }
+    if (!localStorage.getItem('position')) {
         updateJoinButtons(position);
-    } else if (position == 2) {
-        document.getElementById('join-first-team-btn').removeAttribute('disabled', 'disabled');
-    } else {
-        document.getElementById('join-second-team-btn').removeAttribute('disabled', 'disabled');
     }
 }
 
@@ -177,10 +204,20 @@ function onTimerStarted() {
     // let lobbyId = document.getElementById('lobby-id');
     let lobbyPlayersSpan = document.getElementById('lobby-players-span');
     let startRoundButton = document.getElementById('start-round-button');
+    // let acceptButton = document.getElementById('accept-btn');
+    // let rejectButton = document.getElementById('reject-btn');
     
     // lobbyId.style.display = 'none';
     lobbyPlayersSpan.style.display = 'none';
     startRoundButton.style.display = 'none';
+
+    // if (localStorage.getItem('position') === localStorage.getItem('questioning')) {
+    //     acceptButton.style.display = 'inherit';
+    //     rejectButton.style.display = 'inherit';
+    // } else {
+    //     acceptButton.style.display = 'none';
+    //     rejectButton.style.display = 'none';
+    // }
 
     if (window.Worker) {
         let timerWorker = new Worker('/js/game.timer.js');
@@ -196,6 +233,8 @@ function onTimerStarted() {
                 case 'finished':
                     if (localStorage.getItem('timerOwner') === 'true') {
                         localStorage.setItem('timerOwner', false);
+                        // acceptButton.style.display = 'none';
+                        // rejectButton.style.display = 'none';
                         nextRound();
                     }
 
@@ -239,6 +278,31 @@ function updateJoinButtons(position) {
                 document.getElementById('join-second-team-btn').setAttribute('disabled', 'disabled');
             }
             break;
+    }
+}
+
+function updateScore(teamCode, delta) {
+    switch (teamCode) {
+        case 1: {
+            let scoreDiv = document.getElementById('score1');
+            let score = Number.parseInt(scoreDiv.innerText);
+            score += delta;
+
+            if (score >= 0) {
+                scoreDiv.innerText = score;
+            }
+            break;
+        }
+        case 2: {
+            let scoreDiv = document.getElementById('score2');
+            let score = Number.parseInt(scoreDiv.innerText);
+            score += delta;
+
+            if (score >= 0) {
+                scoreDiv.innerText = score;
+            }
+            break;
+        }
     }
 }
 
@@ -293,17 +357,26 @@ function onRoundFinished(currentTeamCode) {
 // word area & start button
 function updateGameField() {
     let startRoundButton = document.getElementById('start-round-button');
+    let acceptButton = document.getElementById('accept-btn');
+    let rejectButton = document.getElementById('reject-btn');
+
     let position = localStorage.getItem('position');
     let questioning = localStorage.getItem('questioning');
     let answering = localStorage.getItem('answering');
 
     if (position == questioning) {
         startRoundButton.style.display = 'block';
+        acceptButton.style.display = 'inherit';
+        rejectButton.style.display = 'inherit';
     } else if (position == answering) {
         startRoundButton.style.display = 'none';
+        acceptButton.style.display = 'none';
+        rejectButton.style.display = 'none';
         // TODO: word area
     } else {
         startRoundButton.style.display = 'none';
+        acceptButton.style.display = 'none';
+        rejectButton.style.display = 'none';
     }
 
     document.querySelectorAll('.player').forEach(x => x.classList.remove('active'));
@@ -326,4 +399,31 @@ function updateGameField() {
             break;
         }
     }
+}
+
+function updateBacklog(teamCode, word, status) {
+    let backlogElement = document.createElement('div');
+    backlogElement.classList.add('expr');
+
+    if (status === 'accepted') {
+        backlogElement.innerHTML =            
+            `<span class="accepted">${word}</span>`;
+
+        switch (teamCode) {
+            case 1: {
+                updateScore(1, 1);
+                break;
+            }
+            case 2: {
+                updateScore(2, 1);
+                break;
+            }
+        }
+    } else {
+        backlogElement.innerHTML =            
+            `<span class="rejected">${word}</span>`;
+    }
+
+    
+    document.getElementById('backlog').appendChild(backlogElement)
 }
