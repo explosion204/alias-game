@@ -7,6 +7,8 @@ window.addEventListener('load', async function (e) {
 });
 
 async function setupGameLayout(gameLayout, sessionId, userId) {
+    await fetchWords();
+
     document.getElementsByTagName('main')[0].innerHTML = gameLayout;
     document.getElementById('footer').style.display = 'none';
     document.getElementById('mainContent').style.margin = 0;
@@ -24,39 +26,19 @@ async function setupGameLayout(gameLayout, sessionId, userId) {
         await joinGame(2);
     };
 
-    document.getElementById('start-round-button').onclick = function (e) {
+    document.getElementById('start-round-button').onclick = async function (e) {
         let userId = localStorage.getItem('userId');
         let sessionId = localStorage.getItem('sessionId');
         localStorage.setItem('timerOwner', true);
+        document.getElementById('word').innerText = await getWord();
 
         showAcceptRejectButtons();
         startTimer();
         notifyTimerStarted(userId, sessionId);
     };
 
-    document.getElementById('accept-btn').onclick = function (e) {
-        let userId = localStorage.getItem('userId');
-        let sessionId = localStorage.getItem('sessionId');
-        let position = localStorage.getItem('position');
-        let word = document.getElementById('word').innerText;
-
-        let teamCode = (position === '1' || position === '2') ? 1 : 2;
-
-        notifyBacklogUpdated(userId, sessionId, teamCode, word, 'accepted');
-        updateBacklog(teamCode, word, 'accepted');
-    }
-
-    document.getElementById('reject-btn').onclick = function (e) {
-        let userId = localStorage.getItem('userId');
-        let sessionId = localStorage.getItem('sessionId');
-        let position = localStorage.getItem('position');
-        let word = document.getElementById('word').innerText;
-
-        let teamCode = (position === '1' || position === '2') ? 1 : 2;
-
-        notifyBacklogUpdated(userId, sessionId, teamCode, word, 'rejected');
-        updateBacklog(teamCode, word, 'rejected');
-    }
+    document.getElementById('accept-btn').onclick = onAcceptButtonClick;
+    document.getElementById('reject-btn').onclick = onRejectButtonClick;
 
     await initSignalRConnection();
     subscribe(sessionId, userId);
@@ -372,6 +354,7 @@ function updateGameField() {
     }
 
     document.querySelectorAll('.player').forEach(x => x.classList.remove('active'));
+    document.getElementById('word').innerText = 'some word...';
 
     switch (questioning) {
         case '1': {
@@ -418,7 +401,7 @@ function hideAcceptRejectButtons() {
     document.getElementById('reject-btn').style.display = 'none';
 }
 
-function updateBacklog(teamCode, word, status) {
+async function updateBacklog(teamCode, word, status) {
     let backlogElement = document.createElement('div');
     backlogElement.classList.add('expr');
 
@@ -461,4 +444,35 @@ function onGameFinished(winner) {
             break;
         }
     }
+}
+
+async function onAcceptButtonClick() {
+    document.getElementById('accept-btn').onclick = function() {}
+
+    let userId = localStorage.getItem('userId');
+    let sessionId = localStorage.getItem('sessionId');
+    let position = localStorage.getItem('position');
+    let word = document.getElementById('word').innerText;
+    let teamCode = (position === '1' || position === '2') ? 1 : 2;
+    document.getElementById('word').innerText = await getWord();
+
+    notifyBacklogUpdated(userId, sessionId, teamCode, word, 'accepted');
+    await updateBacklog(teamCode, word, 'accepted');
+
+    document.getElementById('accept-btn').onclick = onAcceptButtonClick;
+}
+
+async function onRejectButtonClick() {
+    document.getElementById('reject-btn').onclick = function() {}
+    let userId = localStorage.getItem('userId');
+    let sessionId = localStorage.getItem('sessionId');
+    let position = localStorage.getItem('position');
+    let word = document.getElementById('word').innerText;
+    let teamCode = (position === '1' || position === '2') ? 1 : 2;
+    document.getElementById('word').innerText = await getWord();
+
+    notifyBacklogUpdated(userId, sessionId, teamCode, word, 'rejected');
+    await updateBacklog(teamCode, word, 'rejected');
+
+    document.getElementById('reject-btn').onclick = onRejectButtonClick;
 }

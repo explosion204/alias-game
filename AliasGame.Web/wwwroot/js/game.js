@@ -120,6 +120,28 @@ function nextRound() {
     }
 }
 
+async function fetchWords() {
+    let response = await fetch('/api/game/get_words/100');
+
+    if (response.ok) {
+        let result = await response.json();
+        localStorage.setItem('words', JSON.stringify(result['words']));
+    }
+}
+
+async function getWord() {
+    let words = JSON.parse(localStorage.getItem('words'));
+
+    if (words.length === 0) {
+        await fetchWords();
+        words = JSON.parse(localStorage.getItem('words'));
+    }
+
+    let word = words.shift();
+    localStorage.setItem('words', JSON.stringify(words));
+    return word;
+}
+
 /**
  * MESSAGE-BASED INTERACTION FORMAT:
  * 
@@ -261,14 +283,6 @@ function notifyTimerStarted(senderId, sessionId) {
     let json = JSON.stringify(message);
     notifySession(sessionId, senderId, json);
 }
-
-// function notifyTimerStopped(senderId, sessionId) {
-//     let message = {
-//         'message_type': 'timer_started'
-//     };
-//     let json = JSON.stringify(message);
-//     notifySession(sessionId, senderId, json);
-// }
 
 function notifyRoundFinished(senderId, sessionId, currentTeamCode) {
     let message = {

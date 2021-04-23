@@ -28,7 +28,6 @@ window.addEventListener('load', async function() {
             stopLoadingAnimation();
         }, function () {
             alert('You are not authorized');
-            // document.getElementById('signOutBtn').style.display = 'block';
             stopLoadingAnimation();
         })
     }
