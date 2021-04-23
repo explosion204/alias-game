@@ -197,7 +197,7 @@ function setHandlers() {
                     break;
                 }
                 case 'timer_started': {
-                    onTimerStarted();
+                    startTimer();
                     break;
                 }
                 case 'round_finished': {

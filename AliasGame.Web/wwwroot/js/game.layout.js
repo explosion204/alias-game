@@ -12,6 +12,7 @@ async function setupGameLayout(gameLayout, sessionId, userId) {
     document.getElementById('mainContent').style.margin = 0;
     document.getElementById('signOutBtn').style.display = 'none';
     document.getElementById('leaveGameBtn').style.display = 'block';
+    hideAcceptRejectButtons();
 
     document.getElementById('join-first-team-btn').onclick = async function (e) {
         document.querySelectorAll('.join-team-btn').forEach(x => x.setAttribute('disabled', 'disabled'));
@@ -28,7 +29,8 @@ async function setupGameLayout(gameLayout, sessionId, userId) {
         let sessionId = localStorage.getItem('sessionId');
         localStorage.setItem('timerOwner', true);
 
-        onTimerStarted();
+        showAcceptRejectButtons();
+        startTimer();
         notifyTimerStarted(userId, sessionId);
     };
 
@@ -199,7 +201,7 @@ function onUserDisconnected(position) {
     }
 }
 
-function onTimerStarted() {
+function startTimer() {
     let progressBar = document.querySelector('.lobby-id-container');
     // let lobbyId = document.getElementById('lobby-id');
     let lobbyPlayersSpan = document.getElementById('lobby-players-span');
@@ -352,13 +354,12 @@ function onRoundFinished(currentTeamCode) {
     localStorage.setItem('answering', answering);
 
     updateGameField();
+    hideAcceptRejectButtons();
 }
 
 // word area & start button
 function updateGameField() {
     let startRoundButton = document.getElementById('start-round-button');
-    let acceptButton = document.getElementById('accept-btn');
-    let rejectButton = document.getElementById('reject-btn');
 
     let position = localStorage.getItem('position');
     let questioning = localStorage.getItem('questioning');
@@ -366,17 +367,11 @@ function updateGameField() {
 
     if (position == questioning) {
         startRoundButton.style.display = 'block';
-        acceptButton.style.display = 'inherit';
-        rejectButton.style.display = 'inherit';
     } else if (position == answering) {
         startRoundButton.style.display = 'none';
-        acceptButton.style.display = 'none';
-        rejectButton.style.display = 'none';
         // TODO: word area
     } else {
         startRoundButton.style.display = 'none';
-        acceptButton.style.display = 'none';
-        rejectButton.style.display = 'none';
     }
 
     document.querySelectorAll('.player').forEach(x => x.classList.remove('active'));
@@ -399,6 +394,31 @@ function updateGameField() {
             break;
         }
     }
+}
+
+function showAcceptRejectButtons() {
+    let acceptButton = document.getElementById('accept-btn');
+    let rejectButton = document.getElementById('reject-btn');
+
+    let position = localStorage.getItem('position');
+    let questioning = localStorage.getItem('questioning');
+    let answering = localStorage.getItem('answering');
+
+    if (position == questioning) {
+        acceptButton.style.display = 'inherit';
+        rejectButton.style.display = 'inherit';
+    } else if (position == answering) {
+        acceptButton.style.display = 'none';
+        rejectButton.style.display = 'none';
+    } else {
+        acceptButton.style.display = 'none';
+        rejectButton.style.display = 'none';
+    }
+}
+
+function hideAcceptRejectButtons() {
+    document.getElementById('accept-btn').style.display = 'none';
+    document.getElementById('reject-btn').style.display = 'none';
 }
 
 function updateBacklog(teamCode, word, status) {
