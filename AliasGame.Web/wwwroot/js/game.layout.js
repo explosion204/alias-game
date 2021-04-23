@@ -158,13 +158,6 @@ function onUserConnected(userNickname, position) {
             break;
     }
 
-    // if (localStorage.getItem('position') != null) {
-    //     updateJoinButtons(position);
-    // } else if (position == 2) {
-    //     document.getElementById('join-first-team-btn').removeAttribute('disabled', 'disabled');
-    // } else {
-    //     document.getElementById('join-second-team-btn').removeAttribute('disabled', 'disabled');
-    // }
     if (!localStorage.getItem('position')) {
         updateJoinButtons(position);
     }
@@ -203,23 +196,11 @@ function onUserDisconnected(position) {
 
 function startTimer() {
     let progressBar = document.querySelector('.lobby-id-container');
-    // let lobbyId = document.getElementById('lobby-id');
     let lobbyPlayersSpan = document.getElementById('lobby-players-span');
     let startRoundButton = document.getElementById('start-round-button');
-    // let acceptButton = document.getElementById('accept-btn');
-    // let rejectButton = document.getElementById('reject-btn');
-    
-    // lobbyId.style.display = 'none';
+
     lobbyPlayersSpan.style.display = 'none';
     startRoundButton.style.display = 'none';
-
-    // if (localStorage.getItem('position') === localStorage.getItem('questioning')) {
-    //     acceptButton.style.display = 'inherit';
-    //     rejectButton.style.display = 'inherit';
-    // } else {
-    //     acceptButton.style.display = 'none';
-    //     rejectButton.style.display = 'none';
-    // }
 
     if (window.Worker) {
         let timerWorker = new Worker('/js/game.timer.js');
@@ -235,8 +216,6 @@ function startTimer() {
                 case 'finished':
                     if (localStorage.getItem('timerOwner') === 'true') {
                         localStorage.setItem('timerOwner', false);
-                        // acceptButton.style.display = 'none';
-                        // rejectButton.style.display = 'none';
                         nextRound();
                     }
 
@@ -293,6 +272,15 @@ function updateScore(teamCode, delta) {
             if (score >= 0) {
                 scoreDiv.innerText = score;
             }
+
+            if (score >= 30 && localStorage.getItem('timerOwner') === 'true') {
+                let userId = localStorage.getItem('userId');
+                let sessionId = localStorage.getItem('sessionId');
+
+                notifyGameFinished(userId, sessionId, 1);
+                onGameFinished(1);
+            }
+
             break;
         }
         case 2: {
@@ -303,13 +291,22 @@ function updateScore(teamCode, delta) {
             if (score >= 0) {
                 scoreDiv.innerText = score;
             }
+
+            if (score >= 30 && localStorage.getItem('timerOwner') === 'true') {
+                let userId = localStorage.getItem('userId');
+                let sessionId = localStorage.getItem('sessionId');
+
+                notifyGameFinished(userId, sessionId, 1);
+                onGameFinished(2);
+            }
+
             break;
         }
     }
 }
 
 function onSessionClosed() {
-    alert('Session is closed by creator.');
+    alert('Session is closed');
     clearGameData();
     location.reload();
 }
@@ -446,4 +443,22 @@ function updateBacklog(teamCode, word, status) {
 
     
     document.getElementById('backlog').appendChild(backlogElement)
+}
+
+// TODO: update statistics in db
+function onGameFinished(winner) {
+    switch (winner) {
+        case 1: {
+            alert('team 1 wins');
+            clearGameData();
+            location.reload();
+            break;
+        }
+        case 2: {
+            alert('team 2 wins');
+            clearGameData();
+            location.reload();
+            break;
+        }
+    }
 }

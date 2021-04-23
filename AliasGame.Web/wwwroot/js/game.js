@@ -143,15 +143,13 @@ function nextRound() {
  * (4) timer_started
  * 
  * (5) round_finished
- * args: current_team_code (1 or 2)\
+ * args: current_team_code (1 or 2)
  * 
  * (6) backlog_updated
  * args: team_code, word, status('accepted', 'rejected')
- */
-
-/**
- * GAME VARIABLES:
  * 
+ * (7) game_finished
+ * args: winner (1 or 2)
  */
 
 var connection = null;
@@ -211,6 +209,10 @@ function setHandlers() {
                     let status = json['status'];
                     updateBacklog(teamCode, word, status);
                     break;
+                }
+                case 'game_finished': {
+                    let winner = Number.parseInt(json['winner']);
+                    onGameFinished(winner);
                 }
             }
         });
@@ -283,6 +285,15 @@ function notifyBacklogUpdated(senderId, sessionId, teamCode, word, status) {
         'team_code': teamCode,
         'word': word,
         'status': status
+    }
+    let json = JSON.stringify(message);
+    notifySession(sessionId, senderId, json);
+}
+
+function notifyGameFinished(senderId, sessionId, winner) {
+    let message = {
+        'message_type': 'game_finished',
+        'winner': winner
     }
     let json = JSON.stringify(message);
     notifySession(sessionId, senderId, json);
