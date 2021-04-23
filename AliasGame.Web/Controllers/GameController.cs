@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AliasGame.Domain.Models;
 using AliasGame.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +13,17 @@ namespace AliasGame.Controllers
     {
         private readonly ISessionService _sessionService;
         private readonly IUserService _userService;
+        private readonly IExpressionService _expressionService;
 
-        public GameController(ISessionService sessionService, IUserService userService)
+        public GameController(
+            ISessionService sessionService, 
+            IUserService userService,
+            IExpressionService expressionService
+        )
         {
             _sessionService = sessionService;
             _userService = userService;
+            _expressionService = expressionService;
         }
         
         /*
@@ -153,6 +160,25 @@ namespace AliasGame.Controllers
             return Ok(new
             {
                 status = opStatus
+            });
+        }
+
+        /*
+         * {
+         *     "words": "array of requested words"
+         * }
+         * 
+         */
+        [HttpGet("get_words/{count}")]
+        public IActionResult GetWords(int count)
+        {
+            List<string> words = null;
+            
+            words = _expressionService.GetExpressions(count);
+
+            return Ok(new
+            {
+                words
             });
         }
     }

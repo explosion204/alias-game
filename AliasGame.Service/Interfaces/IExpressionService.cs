@@ -5,7 +5,7 @@ namespace AliasGame.Service.Interfaces
 {
     public interface IExpressionService
     {
-        List<Expression> GetExpressions(int count);
+        List<string> GetExpressions(int count);
         
     }
 }

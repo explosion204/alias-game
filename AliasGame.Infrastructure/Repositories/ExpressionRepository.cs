@@ -27,6 +27,12 @@ namespace AliasGame.Infrastructure
             return _mapper.Map<List<Expression>>(efExpressions);
         }
 
+        public List<Expression> GetEntities(int count)
+        {
+            var efExpressions = _context.Expressions.OrderBy(r => Guid.NewGuid()).Take(count);
+            return _mapper.Map<List<Expression>>(efExpressions);
+        }
+
         public Expression GetEntity(string id)
         {
             var efExpression = _context.Expressions.FirstOrDefault(x => x.Id == id);

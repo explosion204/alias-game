@@ -27,6 +27,11 @@ namespace AliasGame.Infrastructure
             return _mapper.Map<List<User>>(efUsers);
         }
 
+        public List<User> GetEntities(int count)
+        {
+            throw new NotSupportedException();
+        }
+
         public User GetEntity(string id)
         {
             var efUser = _context.Users.FirstOrDefault(x => x.Id == id);

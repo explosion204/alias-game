@@ -27,6 +27,11 @@ namespace AliasGame.Infrastructure
             return _mapper.Map<List<Session>>(efSessions);
         }
 
+        public List<Session> GetEntities(int count)
+        {
+            throw new NotSupportedException();
+        }
+
         public Session GetEntity(string id)
         {
             var efSession = _context.Sessions.FirstOrDefault(x => x.Id == id);
